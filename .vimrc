@@ -4,12 +4,11 @@
 
 runtime! debian.vim
 if has("syntax")
-  syntax on
+    syntax on
 endif
 set autoindent
 set nocompatible
 set whichwrap=b,s,h,l,<,>,[,]
-filetype plugin indent on
 
 "--------------
 "   View
@@ -29,16 +28,16 @@ set textwidth=0
 set wrap
 set fileencodings=utf-8,euc-jp,iso-2022-jp,utf-8,cp932
 if &encoding == 'utf-8'
-  set ambiwidth=double
+    set ambiwidth=double
 endif
 highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
 match ZenkakuSpace /　/
 set cursorline
-  augroup cch
+augroup cch
     autocmd! cch
     autocmd WinLeave * set nocursorline
     autocmd WinEnter,BufRead * set cursorline
-  augroup END
+augroup END
 augroup InsertHook
     autocmd!
     autocmd InsertEnter * highlight StatusLine guifg=#ccdc90 guibg=#2E4340
@@ -57,10 +56,10 @@ highlight CursorLine ctermbg=black guibg=black
 let putline_tw = 30 
 inoremap <Leader>line <ESC>:call <SID>PutLine(putline_tw)<CR>A
 function! s:PutLine(len)
-  let plen = a:len - strlen(getline('.'))
-  if (plen > 0)
-    execute 'normal ' plen . 'A-'
-  endif
+    let plen = a:len - strlen(getline('.'))
+    if (plen > 0)
+        execute 'normal ' plen . 'A-'
+    endif
 endfunction
 set showmatch
 set matchtime=4
@@ -72,7 +71,7 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
-set writeany
+set writeany 
 
 "--------------
 "  Search
@@ -85,27 +84,27 @@ vnoremap * "zy:let @/ = @z<CR>n
 
 " Anywhere SID.
 function! s:SID_PREFIX()
-  return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+    return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
 endfunction
 
 " Set tabline.
 function! s:my_tabline()  "{{{
-  let s = ''
-  for i in range(1, tabpagenr('$'))
-    let bufnrs = tabpagebuflist(i)
-    let bufnr = bufnrs[tabpagewinnr(i) - 1]  " first window, first appears
-    let no = i  " display 0-origin tabpagenr.
-    let mod = getbufvar(bufnr, '&modified') ? '!' : ' '
-    let title = fnamemodify(bufname(bufnr), ':t')
-    let title = '[' . title . ']'
-    let s .= '%'.i.'T'
-    let s .= '%#' . (i == tabpagenr() ? 'TabLineSel' : 'TabLine') . '#'
-    let s .= no . ':' . title
-    let s .= mod
-    let s .= '%#TabLineFill# '
-  endfor
-  let s .= '%#TabLineFill#%T%=%#TabLine#'
-  return s
+    let s = ''
+    for i in range(1, tabpagenr('$'))
+        let bufnrs = tabpagebuflist(i)
+        let bufnr = bufnrs[tabpagewinnr(i) - 1]  " first window, first appears
+        let no = i  " display 0-origin tabpagenr.
+        let mod = getbufvar(bufnr, '&modified') ? '!' : ' '
+        let title = fnamemodify(bufname(bufnr), ':t')
+        let title = '[' . title . ']'
+        let s .= '%'.i.'T'
+        let s .= '%#' . (i == tabpagenr() ? 'TabLineSel' : 'TabLine') . '#'
+        let s .= no . ':' . title
+        let s .= mod
+        let s .= '%#TabLineFill# '
+    endfor
+    let s .= '%#TabLineFill#%T%=%#TabLine#'
+    return s
 endfunction "}}}
 let &tabline = '%!'. s:SID_PREFIX() . 'my_tabline()'
 set showtabline=2 " 常にタブラインを表示
@@ -115,7 +114,7 @@ nnoremap    [Tag]   <Nop>
 nmap    t [Tag]
 " Tab jump
 for n in range(1, 9)
-  execute 'nnoremap <silent> [Tag]'.n  ':<C-u>tabnext'.n.'<CR>'
+    execute 'nnoremap <silent> [Tag]'.n  ':<C-u>tabnext'.n.'<CR>'
 endfor
 " t1 で1番左のタブ、t2 で1番左から2番目のタブにジャンプ
 
@@ -140,3 +139,41 @@ map <F5>  :!mcs %<CR>
 map <F6>  :!clang %<CR>
 map <F7>  :!g++ %<CR>
 map <F8>  :!ghc %<CR>
+filetype plugin on
+set omnifunc=syntaxcomplete#Complete
+
+"--------------
+"  NeoBundle
+"--------------
+
+if 0 | endif
+
+filetype off
+
+if has('vim_starting')
+    if &compatible
+        set nocompatible               " Be iMproved
+    endif
+
+    set runtimepath+=~/.vim/bundle/neobundle.vim
+endif
+
+call neobundle#begin(expand('~/.vim/bundle/'))
+
+NeoBundleFetch 'Shougo/neobundle.vim'
+
+NeoBundle "kongo2002/fsharp-vim"
+
+call neobundle#end()
+
+filetype plugin indent on     " required!
+filetype indent on
+syntax on
+
+NeoBundleCheck
+
+let g:make = 'gmake'
+if system('uname -o') =~ '^GNU/'
+    let g:make = 'make'
+endif
+
