@@ -48,7 +48,6 @@ augroup END
 :hi CursorLine gui=underline
 highlight CursorLine ctermbg=black guibg=black
 
-
 "--------------
 "    Edit
 "--------------
@@ -187,3 +186,5 @@ python del powerline_setup
 set laststatus=2
 set showtabline=2
 set noshowmode
+
+
