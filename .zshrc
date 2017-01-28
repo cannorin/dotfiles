@@ -4,7 +4,7 @@ autoload -U compinit
 compinit 
 EDITOR=vim
 
-export PATH=$PATH:/usr/sbin:/usr/local/sbin
+export PATH=$PATH:/usr/sbin:/usr/local/sbin:~/.local/bin
 eval `ssh-agent` > /dev/null
 ssh-add .ssh/id_rsa_cannorin > /dev/null 2&>1
 ssh-add .ssh/id_rsa_evemaybe > /dev/null 2&>1
