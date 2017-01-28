@@ -48,6 +48,7 @@ augroup END
 :hi CursorLine gui=underline
 highlight CursorLine ctermbg=black guibg=black
 
+
 "--------------
 "    Edit
 "--------------
@@ -140,51 +141,4 @@ map <F7>  :!g++ %<CR>
 map <F8>  :!ghc %<CR>
 filetype plugin on
 set omnifunc=syntaxcomplete#Complete
-
-"--------------
-"  NeoBundle
-"--------------
-
-if 0 | endif
-
-filetype off
-
-if has('vim_starting')
-    if &compatible
-        set nocompatible               " Be iMproved
-    endif
-
-    set runtimepath+=~/.vim/bundle/neobundle.vim
-endif
-
-call neobundle#begin(expand('~/.vim/bundle/'))
-
-NeoBundleFetch 'Shougo/neobundle.vim'
-
-NeoBundle "kongo2002/fsharp-vim"
-
-call neobundle#end()
-
-filetype plugin indent on     " required!
-filetype indent on
-syntax on
-
-NeoBundleCheck
-
-let g:make = 'gmake'
-if system('uname -o') =~ '^GNU/'
-    let g:make = 'make'
-endif
-
-"-------------
-"  Powerline  
-"-------------
-
-python from powerline.vim import setup as powerline_setup
-python powerline_setup()
-python del powerline_setup
-set laststatus=2
-set showtabline=2
-set noshowmode
-
 
