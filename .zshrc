@@ -1,10 +1,13 @@
 bindkey -v
- 
+
+export FPATH=$FPATH:~/.local/share/zsh/functions/Completion
 autoload -U compinit
 compinit
 
 export EDITOR=vim
 export PATH=$PATH:/usr/sbin:/usr/local/sbin:~/.local/bin
+export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
+export ANT_HOME=/usr/share/ant
 eval `ssh-agent` > /dev/null
 ssh-add .ssh/id_rsa_cannorin > /dev/null 2>&1
 ssh-add .ssh/id_rsa_evemaybe > /dev/null 2>&1

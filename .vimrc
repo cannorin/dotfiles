@@ -127,18 +127,3 @@ map <silent> [Tag]n :tabnext<CR>
 map <silent> [Tag]p :tabprevious<CR>
 " tp 前のタブ
 
-"--------------
-"    Dev
-"--------------
-
-autocmd FileType cs :compiler mcs
-autocmd FileType c :compiler clang
-autocmd FileType cpp :compiler g++
-autocmd FileType hs :compiler ghc
-map <F5>  :!mcs %<CR>
-map <F6>  :!clang %<CR>
-map <F7>  :!g++ %<CR>
-map <F8>  :!ghc %<CR>
-filetype plugin on
-set omnifunc=syntaxcomplete#Complete
-
