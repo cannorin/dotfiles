@@ -4,10 +4,13 @@ export FPATH=$FPATH:~/.local/share/zsh/functions/Completion
 autoload -U compinit
 compinit
 
+alias vim="nvim"
+
 export EDITOR=vim
-export PATH=$PATH:/usr/sbin:/usr/local/sbin:~/.local/bin
+export PATH=$PATH:/usr/sbin:/usr/local/sbin:~/.local/bin:/usr/local/heroku/bin
 export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
 export ANT_HOME=/usr/share/ant
+export XDG_CONFIG_HOME=~/.config
 eval `ssh-agent` > /dev/null
 ssh-add .ssh/id_rsa* > /dev/null 2>&1
 
@@ -24,6 +27,7 @@ setopt cdable_vars sh_word_split auto_param_keys
 
 alias ls="ls -G"
 alias ls="ls --color"
+alias richvim="VIM_RICH_MODE=1 vim"
 
 HISTFILE=~/.zsh_history
 HISTSIZE=6000000
