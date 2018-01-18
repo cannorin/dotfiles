@@ -33,6 +33,8 @@ if &encoding == 'utf-8'
 endif
 highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
 match ZenkakuSpace /　/
+highlight Tab cterm=underline ctermfg=lightgreen guibg=darkgray
+match Tab /	/
 set cursorline
 augroup cch
     autocmd! cch
@@ -68,9 +70,12 @@ set backspace=indent,eol,start
 set wildmenu
 set cindent
 set undolevels=1000
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+au FileType cs setl sw=4 ts=4 sts=4
+au FileType fsharp setl sw=2 ts=2 sts=2
+au FileType nml setl sw=2 ts=2 sts=2
 set expandtab
 set writeany 
 
@@ -170,7 +175,7 @@ function! s:setup()
       let &rtp.=(empty(&rtp)?'':',').c.plugin_root_dir.'/vim-addon-manager'
 
       " Tell VAM which plugins to fetch & load:
-      call vam#ActivateAddons(['github:OmniSharp/omnisharp-vim', 'github:tpope/vim-dispatch', 'github:scrooloose/syntastic', 'github:Shougo/unite.vim', 'github:Shougo/neocomplete.vim', 'github:ervandew/supertab'], {'auto_install' : 0})
+      call vam#ActivateAddons(['github:OmniSharp/omnisharp-vim', 'github:tpope/vim-dispatch', 'github:scrooloose/syntastic', 'github:Shougo/unite.vim', 'github:Shougo/neocomplete.vim', 'github:ervandew/supertab', 'github:tpope/vim-pathogen', 'github:fsharp/vim-fsharp'], {'auto_install' : 0})
       " sample: call vam#ActivateAddons(['pluginA','pluginB', ...], {'auto_install' : 0})
       " Also See "plugins-per-line" below
 
@@ -195,6 +200,18 @@ function! s:setup()
     " option2:  au GUIEnter * call SetupVAM()
     " See BUGS sections below [*]
     " Vim 7.0 users see BUGS section [3]
+endfunction
+
+function! s:syntastic()
+  set statusline+=%#warningmsg#
+  set statusline+=%{SyntasticStatuslineFlag()}
+  set statusline+=%*
+
+  " let g:syntastic_always_populate_loc_list = 1
+  " let g:syntastic_auto_loc_list = 1
+  let g:syntastic_check_on_open = 1
+  let g:syntastic_check_on_wq = 0
+  let g:syntastic_fsharp_checkers = ['syntax']
 endfunction
 
 function! s:omnisharp()
@@ -319,4 +336,5 @@ let rich=$VIM_RICH_MODE
 if rich == '1'
   call s:setup()
   call s:omnisharp()
+  call s:syntastic()
 endif
