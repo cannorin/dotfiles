@@ -64,6 +64,7 @@ function! s:PutLine(len)
         execute 'normal ' plen . 'A-'
     endif
 endfunction
+set mouse=a
 set showmatch
 set matchtime=4
 set backspace=indent,eol,start
@@ -73,10 +74,11 @@ set undolevels=1000
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
+set expandtab
 au FileType cs setl sw=4 ts=4 sts=4
 au FileType fsharp setl sw=2 ts=2 sts=2
 au FileType nml setl sw=2 ts=2 sts=2
-set expandtab
+au FileType make set noexpandtab sw=4 ts=4 sts=4
 set writeany 
 
 "--------------
@@ -132,74 +134,24 @@ map <silent> [Tag]p :tabprevious<CR>
 "--------------
 
 function! s:setup()
-    fun! EnsureVamIsOnDisk(plugin_root_dir)
-      let vam_autoload_dir = a:plugin_root_dir.'/vim-addon-manager/autoload'
-      if isdirectory(vam_autoload_dir)
-        return 1
-      else
-        if 1 == confirm("Clone VAM into ".a:plugin_root_dir."?","&Y\n&N")
-          call confirm("Remind yourself that most plugins ship with ".
-                      \"documentation (README*, doc/*.txt). It is your ".
-                      \"first source of knowledge. If you can't find ".
-                      \"the info you're looking for in reasonable ".
-                      \"time ask maintainers to improve documentation")
-          call mkdir(a:plugin_root_dir, 'p')
-          execute '!git clone --depth=1 git://github.com/MarcWeber/vim-addon-manager '.
-                      \       shellescape(a:plugin_root_dir, 1).'/vim-addon-manager'
-          exec 'helptags '.fnameescape(a:plugin_root_dir.'/vim-addon-manager/doc')
-        endif
-        return isdirectory(vam_autoload_dir)
-      endif
-    endfun
-
-    fun! SetupVAM()
-      " Set advanced options like this:
-      " let g:vim_addon_manager = {}
-      " let g:vim_addon_manager.key = value
-      "     Pipe all output into a buffer which gets written to disk
-      " let g:vim_addon_manager.log_to_buf =1
-
-      " Example: drop git sources unless git is in PATH. Same plugins can
-      " be installed from www.vim.org. Lookup MergeSources to get more control
-      " let g:vim_addon_manager.drop_git_sources = !executable('git')
-      " let g:vim_addon_manager.debug_activation = 1
-
-      " VAM install location:
-      let c = get(g:, 'vim_addon_manager', {})
-      let g:vim_addon_manager = c
-      let c.plugin_root_dir = expand('$HOME/.vim/vim-addons', 1)
-      if !EnsureVamIsOnDisk(c.plugin_root_dir)
-        echohl ErrorMsg | echomsg "No VAM found!" | echohl NONE
-        return
-      endif
-      let &rtp.=(empty(&rtp)?'':',').c.plugin_root_dir.'/vim-addon-manager'
-
-      " Tell VAM which plugins to fetch & load:
-      call vam#ActivateAddons(['github:OmniSharp/omnisharp-vim', 'github:tpope/vim-dispatch', 'github:scrooloose/syntastic', 'github:Shougo/unite.vim', 'github:Shougo/neocomplete.vim', 'github:ervandew/supertab', 'github:tpope/vim-pathogen', 'github:fsharp/vim-fsharp'], {'auto_install' : 0})
-      " sample: call vam#ActivateAddons(['pluginA','pluginB', ...], {'auto_install' : 0})
-      " Also See "plugins-per-line" below
-
-      " Addons are put into plugin_root_dir/plugin-name directory
-      " unless those directories exist. Then they are activated.
-      " Activating means adding addon dirs to rtp and do some additional
-      " magic
-
-      " How to find addon names?
-      " - look up source from pool
-      " - (<c-x><c-p> complete plugin names):
-      " You can use name rewritings to point to sources:
-      "    ..ActivateAddons(["github:foo", .. => github://foo/vim-addon-foo
-      "    ..ActivateAddons(["github:user/repo", .. => github://user/repo
-      " Also see section "2.2. names of addons and addon sources" in VAM's documentation
-    endfun
-    call SetupVAM()
-    " experimental [E1]: load plugins lazily depending on filetype, See
-    " NOTES
-    " experimental [E2]: run after gui has been started (gvim) [3]
-    " option1:  au VimEnter * call SetupVAM()
-    " option2:  au GUIEnter * call SetupVAM()
-    " See BUGS sections below [*]
-    " Vim 7.0 users see BUGS section [3]
+  if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  endif
+  call plug#begin('~/.vim/plugged')
+  Plug 'tpope/vim-dispatch'
+  Plug 'tpope/vim-pathogen'
+  Plug 'scrooloose/syntastic'
+  Plug 'Shougo/unite.vim'
+  Plug 'Shougo/neocomplete.vim'
+  Plug 'ervandew/supertab'
+  Plug 'qnighy/satysfi.vim'
+  Plug 'OmniSharp/omnisharp-vim'
+  Plug 'fsharp/vim-fsharp', { 'for': 'fsharp', 'do': 'make fsautocomplete' }
+  call plug#end()
 endfunction
 
 function! s:syntastic()
@@ -332,9 +284,10 @@ function! s:omnisharp()
     " let g:OmniSharp_want_snippet=1
 endfunction
 
+call s:setup()
+
 let rich=$VIM_RICH_MODE
 if rich == '1'
-  call s:setup()
   call s:omnisharp()
   call s:syntastic()
 endif

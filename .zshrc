@@ -1,5 +1,7 @@
 bindkey -v
 
+export DISPLAY=localhost:0.0
+
 export FPATH=$FPATH:~/.local/share/zsh/functions/Completion
 autoload -U compinit
 compinit -u
@@ -8,6 +10,7 @@ alias vim="nvim"
 
 export EDITOR=vim
 export PATH=$PATH:/usr/sbin:/usr/local/sbin:~/.local/bin:/usr/local/heroku/bin:~/.cabal/bin
+export PATH=$PATH:~/.opam/4.06.0/bin
 export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
 export ANT_HOME=/usr/share/ant
 export XDG_CONFIG_HOME=~/.config
@@ -60,11 +63,15 @@ function prompt(){
     SPROMPT="%{[0m%}%r ? [nyae] %{[34m%}%{[0m%}:%{[0m%} "
     ;;
   esac
+
+  if [[ $(who am i) =~ \([-a-zA-Z0-9\.]+\) ]]; then
+    export RPROMPT="%{$fg_bold[blue]%}[@${HOST}]"
+  fi
 }
  
 prompt
 
-function fsc () { unbuffer fsharpc --consolecolors+ $@ |& sed -u "s/.\[\?1h.=.\[6n.\[H.\[J//g" | less -r }
+#function fsc () { unbuffer fsharpc --consolecolors+ $@ |& sed -u "s/.\[\?1h.=.\[6n.\[H.\[J//g" | less -r }
 
 function extract() {
   case $1 in
@@ -120,9 +127,9 @@ function winexe() {
       mono $EXEPATH $*
   fi
 }
-alias -s exe=winexe
-alias -s msi="wine msiexec /i"
-alias -s inf="wine rundll32 setupapi,InstallHinfSection DefaultInstall 132"
+#alias -s exe=winexe
+#alias -s msi="wine msiexec /i"
+#alias -s inf="wine rundll32 setupapi,InstallHinfSection DefaultInstall 132"
 
 function git-reset-author() {
   USERNAME="cannorin"
@@ -132,3 +139,35 @@ function git-reset-author() {
 }
 
 alias git-commit-today='git commit -m "$(LANG=C date)"'
+
+function git-unignore() {
+  [ -f ".gitignore" ] ||
+  {
+    echo git-unignore: .gitignore not found
+    return -1
+  }
+  for file in $@; do
+    echo !$file >> .gitignore
+  done
+}
+
+function c() {
+  gcc -o a.out $@ && {
+    ./a.out
+    rm a.out
+  }
+}
+
+#[ -f "$HOME/codes/misc/FsxTools.dll" ] && alias fsharpi="fsharpi -r $HOME/codes/misc/FsxTools.dll"
+
+[ -f ".$HOME/windows" ] && {
+  export DISPLAY=localhost:0.0
+  (
+      command_path="/mnt/c/Program Files/VcXsrv/vcxsrv.exe"
+      command_name=$(basename "$command_path")
+
+      if ! tasklist.exe 2> /dev/null | fgrep -q "$command_name"; then
+          "$command_path" :0 -multiwindow -xkbmodel jp106 -xkblayout jp -clipboard -noprimary -wgl > /dev/null 2>&1 &
+      fi
+  )
+}
