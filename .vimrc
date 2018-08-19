@@ -2,29 +2,51 @@
 "   Base
 "--------------
 
-runtime! debian.vim
-if has("syntax")
-    syntax on
-endif
-set autoindent
 set nocompatible
+set mouse=a
 set whichwrap=b,s,h,l,<,>,[,]
+
+if exists('g:gui_oni')
+  set shell=bash
+  set shellcmdflag=-c
+  set shellquote=
+  set shellxescape=
+  set shellxquote="
+else
+  runtime! debian.vim
+endif
+
+if has("syntax")
+  syntax on
+endif
 filetype plugin on 
+
+set autoindent
 
 "--------------
 "   View
 "--------------
 
-colorscheme desert
 set title
 set display=uhex
 set number
-set shortmess+=I
-set showcmd
-set cmdheight=1
 set scrolloff=2
-set laststatus=2
-highlight StatusLine term=bold cterm=bold ctermfg=black ctermbg=white
+set shortmess+=I
+
+if exists('g:gui_oni')
+  set noswapfile
+  set noshowmode
+  set noruler
+  set laststatus=0
+  set noshowcmd
+else
+  set showcmd
+  set cmdheight=1
+  set laststatus=2
+  highlight StatusLine term=bold cterm=bold ctermfg=black ctermbg=white
+  colorscheme desert
+endif
+
 set textwidth=0
 set wrap
 set fileencodings=utf-8,euc-jp,iso-2022-jp,utf-8,cp932
@@ -134,7 +156,7 @@ map <silent> [Tag]p :tabprevious<CR>
 "--------------
 
 function! s:setup()
-  if empty(glob('~/.vim/autoload/plug.vim'))
+  if !exists('g:gui_oni') && empty(glob('~/.vim/autoload/plug.vim'))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
@@ -142,6 +164,9 @@ function! s:setup()
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
   endif
   call plug#begin('~/.vim/plugged')
+  if !exists('g:gui_oni')
+    Plug 'OmniSharp/omnisharp-vim'
+  endif
   Plug 'tpope/vim-dispatch'
   Plug 'tpope/vim-pathogen'
   Plug 'scrooloose/syntastic'
@@ -149,7 +174,6 @@ function! s:setup()
   Plug 'Shougo/neocomplete.vim'
   Plug 'ervandew/supertab'
   Plug 'qnighy/satysfi.vim'
-  Plug 'OmniSharp/omnisharp-vim'
   Plug 'fsharp/vim-fsharp', { 'for': 'fsharp', 'do': 'make fsautocomplete' }
   call plug#end()
 endfunction
@@ -291,3 +315,4 @@ if rich == '1'
   call s:omnisharp()
   call s:syntastic()
 endif
+
