@@ -1,7 +1,5 @@
 bindkey -v
 
-export DISPLAY=localhost:0.0
-
 export FPATH=$FPATH:~/.local/share/zsh/functions/Completion
 autoload -U compinit
 compinit -u
@@ -127,14 +125,10 @@ function winexe() {
       mono $EXEPATH $*
   fi
 }
-#alias -s exe=winexe
-#alias -s msi="wine msiexec /i"
-#alias -s inf="wine rundll32 setupapi,InstallHinfSection DefaultInstall 132"
 
 function git-reset-author() {
-  USERNAME="cannorin"
-  git config --local --add user.email "$USERNAME@users.noreply.github.com"
-  git config --local --add user.name "$USERNAME"
+  git config --local --add user.email "cannorin@users.noreply.github.com"
+  git config --local --add user.name "cannorin"
   git commit --amend --reset-author
 }
 
@@ -160,7 +154,7 @@ function c() {
 
 #[ -f "$HOME/codes/misc/FsxTools.dll" ] && alias fsharpi="fsharpi -r $HOME/codes/misc/FsxTools.dll"
 
-[ -f ".$HOME/windows" ] && {
+if [ -f ".$HOME/windows" ]; then {
   export DISPLAY=localhost:0.0
   (
       command_path="/mnt/c/Program Files/VcXsrv/vcxsrv.exe"
@@ -171,3 +165,10 @@ function c() {
       fi
   )
 }
+else {
+  export FrameworkPathOverride=/usr/lib/mono/4.5/
+  alias -s exe=winexe
+  alias -s msi="wine msiexec /i"
+  alias -s inf="wine rundll32 setupapi,InstallHinfSection DefaultInstall 132"
+}
+fi
