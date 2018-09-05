@@ -51,19 +51,19 @@ bindkey "^N" history-beginning-search-forward-end
 function prompt(){
    case ${UID} in
 0)
-    PROMPT="%B%{[0m%}%/%{[34m%}%{[0m%}#%{[0m%}%b "
-    PROMPT2="%{[0m%}%_%{[34m%}%{[0m%}$%{[0m%} "
-    SPROMPT="%B%{[0m%}%r is correct? [n,y,a,e] %{[34m%}%{[0m%}:%{[0m%}%b "
+    PROMPT="%B%/#%b "
+    PROMPT2="%_$ "
+    SPROMPT="%B%r is correct? [n,y,a,e] : "
     ;;
 *)
-    PROMPT="%/ %{[34m%}%{[0m%}$%{[0m%} "
-    PROMPT2="%_%{[34m%}%{[0m%}#%{[0m%}%b "
-    SPROMPT="%{[0m%}%r ? [nyae] %{[34m%}%{[0m%}:%{[0m%} "
+    PROMPT="%(5~|%-1~/.../%2~|%4~) $ "
+    PROMPT2="%(5~|%-1~/.../%2~|%4~) # "
+    SPROMPT="%r ? [nyae] : "
     ;;
   esac
 
-  if [[ $(who am i) =~ \([-a-zA-Z0-9\.]+\) ]]; then
-    export RPROMPT="%{$fg_bold[blue]%}[@${HOST}]"
+  if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_CONNECTION"] || [ -n "$SSH_TTY" ]; then
+    RPROMPT="%{$fg_bold[white]%}[%M]"
   fi
 }
  
