@@ -32,6 +32,7 @@ set display=uhex
 set number
 set scrolloff=2
 set shortmess+=I
+colorscheme desert
 
 if exists('g:gui_oni')
   set noswapfile
@@ -44,7 +45,6 @@ else
   set cmdheight=1
   set laststatus=2
   highlight StatusLine term=bold cterm=bold ctermfg=black ctermbg=white
-  colorscheme desert
 endif
 
 set textwidth=0

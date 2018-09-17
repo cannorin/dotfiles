@@ -166,9 +166,17 @@ if [ -f ".$HOME/windows" ]; then {
   )
 }
 else {
-  export FrameworkPathOverride=/usr/lib/mono/4.5/
+  export FrameworkPathOverride=/usr/lib/mono/4.7.1-api/
   alias -s exe=winexe
   alias -s msi="wine msiexec /i"
   alias -s inf="wine rundll32 setupapi,InstallHinfSection DefaultInstall 132"
+
+  PATH="/home/alice/perl5/bin${PATH:+:${PATH}}"; export PATH;
+  PERL5LIB="/home/alice/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+  PERL_LOCAL_LIB_ROOT="/home/alice/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+  PERL_MB_OPT="--install_base \"/home/alice/perl5\""; export PERL_MB_OPT;
+  PERL_MM_OPT="INSTALL_BASE=/home/alice/perl5"; export PERL_MM_OPT;
 }
 fi
+
+
