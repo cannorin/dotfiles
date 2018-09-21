@@ -1,0 +1,19 @@
+{
+    "window.titleBarStyle": "custom",
+    "todo-tree.defaultHighlight": {
+        "foreground": "green",
+        "type": "none"
+    },
+    "todo-tree.customHighlight": {
+        "TODO": {},
+        "FIXME": {}
+    },
+    "editor.tabSize": 2,
+    "editor.fontFamily": "monospace",
+    "editor.minimap.enabled": false,
+    "editor.codeLens": false,
+    "FSharp.enableBackgroundSymbolCache": true,
+    "FSharp.lineLens.enabled": "replaceCodeLens",
+    "FSharp.minimizeBackgroundParsing": true,
+    "terminal.integrated.fontFamily": "monospace"
+}
