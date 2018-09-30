@@ -126,9 +126,13 @@ function winexe() {
   fi
 }
 
-function git-reset-author() {
+function git-set-author() {
   git config --local --add user.email "cannorin@users.noreply.github.com"
   git config --local --add user.name "cannorin"
+}
+
+function git-reset-author() {
+  git-set-author
   git commit --amend --reset-author
 }
 
@@ -151,6 +155,8 @@ function c() {
     rm a.out
   }
 }
+
+alias create-system-backup="sudo mksquashfs / /media/alice/Elements/linux-backup/$(LANG=C date +%F).squashfs -e media dev run mnt proc sys tmp"
 
 #[ -f "$HOME/codes/misc/FsxTools.dll" ] && alias fsharpi="fsharpi -r $HOME/codes/misc/FsxTools.dll"
 

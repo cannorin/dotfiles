@@ -15,5 +15,6 @@
     "FSharp.enableBackgroundSymbolCache": true,
     "FSharp.lineLens.enabled": "replaceCodeLens",
     "FSharp.minimizeBackgroundParsing": true,
-    "terminal.integrated.fontFamily": "monospace"
+    "terminal.integrated.fontFamily": "monospace",
+    "editor.mouseWheelZoom": true
 }
