@@ -11,5 +11,30 @@
     "FSharp.fsacRuntime": "netcore",
     "editor.minimap.enabled": false,
     "window.titleBarStyle": "custom",
-    "FSharp.logLanguageServiceRequestsOutputWindowLevel": "DEBUG"
+    "FSharp.logLanguageServiceRequestsOutputWindowLevel": "DEBUG",
+    "FSharp.logLanguageServiceRequests": "both",
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": [
+                "u"
+            ],
+            "after": [],
+            "commands": [
+                {
+                    "command": "undo"
+                }
+            ]
+        },
+        {
+            "before": [
+                "<C-r>"
+            ],
+            "after": [],
+            "commands": [
+                {
+                    "command": "redo"
+                }
+            ]
+        }
+    ]
 }
