@@ -1,23 +1,15 @@
 {
-    "window.titleBarStyle": "custom",
-    "todo-tree.defaultHighlight": {
-        "foreground": "green",
-        "type": "none"
-    },
-    "todo-tree.customHighlight": {
-        "TODO": {},
-        "FIXME": {}
-    },
     "editor.tabSize": 2,
     "editor.fontFamily": "monospace",
-    "editor.minimap.enabled": false,
-    "editor.codeLens": false,
-    "FSharp.enableBackgroundSymbolCache": true,
+    "editor.fontSize": 15,
     "FSharp.lineLens.enabled": "replaceCodeLens",
-    "FSharp.minimizeBackgroundParsing": true,
-    "terminal.integrated.fontFamily": "monospace",
-    "editor.mouseWheelZoom": true,
-    "FSharp.fsacRuntime": "netcore",
+    "FSharp.enableAnalyzers": true,
     "FSharp.msbuildHost": ".net core",
-    "FSharp.workspaceLoader": "projects"
+    "FSharp.msbuildAutoshow": true,
+    "FSharp.workspaceLoader": "projects",
+    "FSharp.minimizeBackgroundParsing": true,
+    "FSharp.fsacRuntime": "netcore",
+    "editor.minimap.enabled": false,
+    "window.titleBarStyle": "custom",
+    "FSharp.logLanguageServiceRequestsOutputWindowLevel": "DEBUG"
 }
