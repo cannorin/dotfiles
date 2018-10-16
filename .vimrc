@@ -314,5 +314,8 @@ let rich=$VIM_RICH_MODE
 if rich == '1'
   call s:omnisharp()
   call s:syntastic()
+else
+  let g:fsharp_only_check_errors_on_write = 1
+  let g:syntastic_fsharp_checkers = ['']
 endif
 

@@ -16,5 +16,8 @@
     "FSharp.lineLens.enabled": "replaceCodeLens",
     "FSharp.minimizeBackgroundParsing": true,
     "terminal.integrated.fontFamily": "monospace",
-    "editor.mouseWheelZoom": true
+    "editor.mouseWheelZoom": true,
+    "FSharp.fsacRuntime": "netcore",
+    "FSharp.msbuildHost": ".net core",
+    "FSharp.workspaceLoader": "projects"
 }
