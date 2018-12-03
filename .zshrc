@@ -62,7 +62,7 @@ function prompt(){
     ;;
   esac
 
-  if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_CONNECTION"] || [ -n "$SSH_TTY" ]; then
+  if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_CONNECTION" ] || [ -n "$SSH_TTY" ]; then
     RPROMPT="%{$fg_bold[white]%}[%M]"
   fi
 }
