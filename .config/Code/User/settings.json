@@ -6,9 +6,7 @@
     "FSharp.enableAnalyzers": true,
     "FSharp.msbuildHost": ".net core",
     "FSharp.msbuildAutoshow": true,
-    "FSharp.workspaceLoader": "projects",
     "FSharp.minimizeBackgroundParsing": true,
-    "FSharp.fsacRuntime": "netcore",
     "editor.minimap.enabled": false,
     "window.titleBarStyle": "custom",
     "FSharp.logLanguageServiceRequestsOutputWindowLevel": "DEBUG",
@@ -36,5 +34,10 @@
                 }
             ]
         }
-    ]
+    ],
+    "FSharp.enableBackgroundSymbolCache": true,
+    "FSharp.resolveNamespaces": false,
+    "FSharp.workspaceLoader": "projects",
+    "FSharp.fsacRuntime": "netcore",
+    "editor.mouseWheelZoom": true
 }
