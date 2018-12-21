@@ -12,6 +12,7 @@ export PATH=$PATH:~/.opam/4.06.0/bin
 export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
 export ANT_HOME=/usr/share/ant
 export XDG_CONFIG_HOME=~/.config
+export GTK_IM_MODULE=xim
 eval `ssh-agent` > /dev/null
 ssh-add ~/.ssh/id_rsa* > /dev/null 2>&1
 
@@ -150,8 +151,10 @@ function git-unignore() {
 }
 
 function c() {
-  gcc -o a.out $@ && {
-    ./a.out
+  cmpargs=$(echo $@ | awk -F '--' '{$0=$1}1')
+  runargs=$(echo $@ | awk -F '--' '{$0=$2}1')
+  gcc -o a.out $cmpargs && {
+    ./a.out $runargs
     rm a.out
   }
 }

@@ -39,5 +39,6 @@
     "FSharp.resolveNamespaces": false,
     "FSharp.workspaceLoader": "projects",
     "FSharp.fsacRuntime": "netcore",
-    "editor.mouseWheelZoom": true
+    "editor.mouseWheelZoom": true,
+    "explorer.confirmDragAndDrop": false
 }

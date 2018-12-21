@@ -97,6 +97,7 @@ set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 set expandtab
+au FileType c setl sw=2 ts=2 sts=2
 au FileType cs setl sw=4 ts=4 sts=4
 au FileType fsharp setl sw=2 ts=2 sts=2
 au FileType nml setl sw=2 ts=2 sts=2
