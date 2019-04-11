@@ -9,10 +9,17 @@ alias vim="nvim"
 export EDITOR=vim
 export PATH=$PATH:/usr/sbin:/usr/local/sbin:~/.local/bin:/usr/local/heroku/bin:~/.cabal/bin
 export PATH=$PATH:~/.opam/4.06.0/bin
+
 export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
 export ANT_HOME=/usr/share/ant
 export XDG_CONFIG_HOME=~/.config
-export GTK_IM_MODULE=xim
+
+export XMODIFIERS DEFAULT=@im=fcitx
+export GTK_IM_MODULE DEFAULT=fcitx
+export QT_IM_MODULE DEFAULT=fcitx
+
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+
 eval `ssh-agent` > /dev/null
 ssh-add ~/.ssh/id_rsa* > /dev/null 2>&1
 
@@ -176,6 +183,7 @@ if [ -f ".$HOME/windows" ]; then {
 }
 else {
   export FrameworkPathOverride=/usr/lib/mono/4.7.1-api/
+  export DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER=0
   alias -s exe=winexe
   alias -s msi="wine msiexec /i"
   alias -s inf="wine rundll32 setupapi,InstallHinfSection DefaultInstall 132"
