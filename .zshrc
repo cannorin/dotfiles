@@ -7,25 +7,66 @@ compinit -u
 alias vim="nvim"
 
 export EDITOR=vim
-export PATH=$PATH:/usr/sbin:/usr/local/sbin:~/.local/bin:/usr/local/heroku/bin:~/.cabal/bin
+export PATH=$PATH:/usr/sbin:/usr/local/sbin:~/.local/bin:/usr/local/heroku/bin:~/.cabal/bin:$HOME/.dotnet/tools
 export PATH=$PATH:~/.opam/4.06.0/bin
 
-export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
-export ANT_HOME=/usr/share/ant
-export XDG_CONFIG_HOME=~/.config
+if [ -f "$HOME/windows" ]; then {
+  export DISPLAY=localhost:0.0
+  (
+      command_path="/mnt/c/Program Files/VcXsrv/vcxsrv.exe"
+      command_name=$(basename "$command_path")
 
-export XMODIFIERS DEFAULT=@im=fcitx
-export GTK_IM_MODULE DEFAULT=fcitx
-export QT_IM_MODULE DEFAULT=fcitx
+      if ! tasklist.exe 2> /dev/null | fgrep -q "$command_name"; then
+          "$command_path" :0 -multiwindow -xkbmodel jp106 -xkblayout jp -clipboard -noprimary -wgl > /dev/null 2>&1 &
+      fi
+  )
+}
+elif [ -f "$HOME/.osx" ]; then {
+  PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+  PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
+  PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+  PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
+  PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
+
+  MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+  MANPATH="/usr/local/opt/findutils/libexec/gnuman:$MANPATH"
+  MANPATH="/usr/local/opt/gnu-sed/libexec/gnuman:$MANPATH"
+  MANPATH="/usr/local/opt/gnu-tar/libexec/gnuman:$MANPATH"
+  MANPATH="/usr/local/opt/grep/libexec/gnuman:$MANPATH"
+
+  test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+  export PATH="/usr/local/opt/icu4c/bin:$PATH"
+  export PATH="/usr/local/opt/icu4c/sbin:$PATH"
+}
+else {
+  export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
+  export ANT_HOME=/usr/share/ant
+  export XDG_CONFIG_HOME=~/.config
+
+  export XMODIFIERS DEFAULT=@im=fcitx
+  export GTK_IM_MODULE DEFAULT=fcitx
+  export QT_IM_MODULE DEFAULT=fcitx
+
+  export FrameworkPathOverride=/usr/lib/mono/4.7.1-api/
+  export DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER=0
+  alias -s exe=winexe
+  alias -s msi="wine msiexec /i"
+  alias -s inf="wine rundll32 setupapi,InstallHinfSection DefaultInstall 132"
+
+  PATH="/home/alice/perl5/bin${PATH:+:${PATH}}"; export PATH;
+  PERL5LIB="/home/alice/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+  PERL_LOCAL_LIB_ROOT="/home/alice/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+  PERL_MB_OPT="--install_base \"/home/alice/perl5\""; export PERL_MB_OPT;
+  PERL_MM_OPT="INSTALL_BASE=/home/alice/perl5"; export PERL_MM_OPT;
+
+  eval `ssh-agent` > /dev/null
+}
+fi
 
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
-eval `ssh-agent` > /dev/null
 ssh-add ~/.ssh/id_rsa* > /dev/null 2>&1
-
-autoload -U tetris
-zle -N tetris
-bindkey '^T' tetris
 
 setopt auto_pushd nolistbeep list_packed
 setopt auto_menu auto_cd correct auto_name_dirs auto_remove_slash
@@ -42,7 +83,7 @@ alias -s fsx=fsharpi
 alias -s csx=csharp
 
 alias reload="source ~/.zshrc"
-alias sudoit='sudo -s -- sh -c "$(fc -nl | tail -n 1)"'
+alias sudo-it='sudo -s -- sh -c "$(fc -nl | tail -n 1)"'
 
 HISTFILE=~/.zsh_history
 HISTSIZE=6000000
@@ -170,30 +211,5 @@ alias create-system-backup="sudo mksquashfs / /media/alice/Elements/linux-backup
 
 #[ -f "$HOME/codes/misc/FsxTools.dll" ] && alias fsharpi="fsharpi -r $HOME/codes/misc/FsxTools.dll"
 
-if [ -f ".$HOME/windows" ]; then {
-  export DISPLAY=localhost:0.0
-  (
-      command_path="/mnt/c/Program Files/VcXsrv/vcxsrv.exe"
-      command_name=$(basename "$command_path")
-
-      if ! tasklist.exe 2> /dev/null | fgrep -q "$command_name"; then
-          "$command_path" :0 -multiwindow -xkbmodel jp106 -xkblayout jp -clipboard -noprimary -wgl > /dev/null 2>&1 &
-      fi
-  )
-}
-else {
-  export FrameworkPathOverride=/usr/lib/mono/4.7.1-api/
-  export DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER=0
-  alias -s exe=winexe
-  alias -s msi="wine msiexec /i"
-  alias -s inf="wine rundll32 setupapi,InstallHinfSection DefaultInstall 132"
-
-  PATH="/home/alice/perl5/bin${PATH:+:${PATH}}"; export PATH;
-  PERL5LIB="/home/alice/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-  PERL_LOCAL_LIB_ROOT="/home/alice/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-  PERL_MB_OPT="--install_base \"/home/alice/perl5\""; export PERL_MB_OPT;
-  PERL_MM_OPT="INSTALL_BASE=/home/alice/perl5"; export PERL_MM_OPT;
-}
-fi
 
 
