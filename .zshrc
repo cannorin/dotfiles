@@ -175,6 +175,16 @@ function winexe() {
   fi
 }
 
+function git-set-author-github() {
+  git config --local --add user.email "cannorin@users.noreply.github.com"
+  git config --local --add user.name "cannorin"
+}
+
+function git-reset-author-github() {
+  git-set-author-github
+  git commit --amend --reset-author
+}
+
 function git-set-author() {
   git config --local --add user.email "cannorin@gmail.com"
   git config --local --add user.name "cannorin"
