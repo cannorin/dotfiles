@@ -38,6 +38,8 @@ elif [ -f "$HOME/.osx" ]; then {
 
   export PATH="/usr/local/opt/icu4c/bin:$PATH"
   export PATH="/usr/local/opt/icu4c/sbin:$PATH"
+  
+  export FrameworkPathOverride=/Library/Frameworks/Mono.framework/Versions/Current/lib/mono/4.7.1-api
 }
 else {
   export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
