@@ -7,8 +7,9 @@ compinit -u
 alias vim="nvim"
 
 export EDITOR=vim
-export PATH=$PATH:/usr/sbin:/usr/local/sbin:~/.local/bin:/usr/local/heroku/bin:~/.cabal/bin
-export PATH=$PATH:~/.opam/4.06.0/bin
+export PATH=$HOME/.local/bin:$PATH
+export PATH=$PATH:/usr/sbin:/usr/local/sbin:/usr/local/heroku/bin:$HOME/.cabal/bin
+export PATH=$PATH:$HOME/.opam/4.06.0/bin
 
 export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
 export ANT_HOME=/usr/share/ant
@@ -160,7 +161,7 @@ function git-unignore() {
 function c() {
   cmpargs=$(echo $@ | awk -F '--' '{$0=$1}1')
   runargs=$(echo $@ | awk -F '--' '{$0=$2}1')
-  gcc -o a.out $cmpargs && {
+  gcc -O3 -o a.out $cmpargs && {
     ./a.out $runargs
     rm a.out
   }

@@ -35,7 +35,6 @@
     "explorer.confirmDragAndDrop": false,
     "FSharp.externalAutocomplete": false,
     "editor.minimap.maxColumn": 30,
-    "editor.fontLigatures": true,
     "window.zoomLevel": -0.5,
     "editor.fontSize": 18,
     "editor.minimap.renderCharacters": false,
@@ -75,4 +74,10 @@
     "explorer.confirmDelete": false,
     "csharp.suppressDotnetInstallWarning": true,
     "omnisharp.useGlobalMono": "always",
+    "FSharp.enableTouchBar": false,
+    "fsharp.trace.server": "messages",
+    "latex-workshop.message.update.show": false,
+    "latex-workshop.bind.enter.key": false,
+    "latex-workshop.message.error.show": false,
+    "latex-workshop.message.warning.show": false,
 }

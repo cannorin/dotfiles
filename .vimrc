@@ -3,10 +3,7 @@
 "--------------
 
 set nocompatible
-set mouse=a
 set whichwrap=b,s,h,l,<,>,[,]
-set clipboard&
-set clipboard^=unnamedplus
 
 if exists('g:gui_oni')
   set shell=bash
@@ -89,6 +86,9 @@ function! s:PutLine(len)
     endif
 endfunction
 set mouse=a
+set clipboard&
+set clipboard^=unnamedplus
+
 set showmatch
 set matchtime=4
 set backspace=indent,eol,start
@@ -113,6 +113,7 @@ set writeany
 set history=100
 set ignorecase
 set wrapscan
+set incsearch
 vnoremap * "zy:let @/ = @z<CR>n
 
 " Anywhere SID.
