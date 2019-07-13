@@ -178,17 +178,15 @@ function! s:setup()
   Plug 'Shougo/unite.vim'
   Plug 'ervandew/supertab'
   Plug 'qnighy/satysfi.vim'
-  Plug 'kongo2002/fsharp-vim'
-  Plug 'fsprojects/fsharp-language-server', { 
-    \ 'for': 'fsharp',
-    \ 'dir': '~/.fsharp-lsp',
-    \ 'do' : 'npm install && dotnet build -c Release',
-    \ }
   Plug 'autozimu/LanguageClient-neovim', {
       \ 'branch': 'next',
       \ 'do': 'bash install.sh',
       \ }
   Plug 'junegunn/fzf'
+  Plug 'cannorin/vim-fsharp-languageclient', {
+      \ 'for': 'fsharp',
+      \ 'do':  'make fsautocomplete',
+      \}
 
   if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -201,22 +199,10 @@ function! s:setup()
   call plug#end()
 endfunction
 
-function! s:syntastic()
-  set statusline+=%#warningmsg#
-  set statusline+=%{SyntasticStatuslineFlag()}
-  set statusline+=%*
-
-  " let g:syntastic_always_populate_loc_list = 1
-  " let g:syntastic_auto_loc_list = 1
-  let g:syntastic_check_on_open = 1
-  let g:syntastic_check_on_wq = 0
-  let g:syntastic_fsharp_checkers = ['syntax']
-endfunction
-
 function! s:languageclient()
   let g:deoplete#enable_at_startup = 1
   let g:LanguageClient_serverCommands = {
-    \ 'fsharp': ['dotnet', '/home/alice/.fsharp-lsp/src/FSharpLanguageServer/bin/Release/netcoreapp2.0/FSharpLanguageServer.dll']
+    \ 'fsharp': g:fsharp#languageserver_command
     \ }
 
   nnoremap <F5> :call LanguageClient_contextMenu()<CR>
@@ -227,7 +213,6 @@ function! s:languageclient()
 endfunction
 
 call s:setup()
-call s:syntastic()
 call s:languageclient()
 
 " let g:syntastic_fsharp_checkers = ['']
