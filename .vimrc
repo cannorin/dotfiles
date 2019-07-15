@@ -3,10 +3,7 @@
 "--------------
 
 set nocompatible
-set mouse=a
 set whichwrap=b,s,h,l,<,>,[,]
-set clipboard&
-set clipboard^=unnamedplus
 
 if exists('g:gui_oni')
   set shell=bash
@@ -89,6 +86,9 @@ function! s:PutLine(len)
     endif
 endfunction
 set mouse=a
+set clipboard&
+set clipboard^=unnamedplus
+
 set showmatch
 set matchtime=4
 set backspace=indent,eol,start
@@ -113,6 +113,7 @@ set writeany
 set history=100
 set ignorecase
 set wrapscan
+set incsearch
 vnoremap * "zy:let @/ = @z<CR>n
 
 " Anywhere SID.
@@ -177,17 +178,15 @@ function! s:setup()
   Plug 'Shougo/unite.vim'
   Plug 'ervandew/supertab'
   Plug 'qnighy/satysfi.vim'
-  Plug 'kongo2002/fsharp-vim'
-  Plug 'fsprojects/fsharp-language-server', { 
-    \ 'for': 'fsharp',
-    \ 'dir': '~/.fsharp-lsp',
-    \ 'do' : 'npm install && dotnet build -c Release',
-    \ }
   Plug 'autozimu/LanguageClient-neovim', {
       \ 'branch': 'next',
       \ 'do': 'bash install.sh',
       \ }
   Plug 'junegunn/fzf'
+  Plug 'cannorin/vim-fsharp-languageclient', {
+      \ 'for': 'fsharp',
+      \ 'do':  'make fsautocomplete',
+      \}
 
   if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -200,22 +199,10 @@ function! s:setup()
   call plug#end()
 endfunction
 
-function! s:syntastic()
-  set statusline+=%#warningmsg#
-  set statusline+=%{SyntasticStatuslineFlag()}
-  set statusline+=%*
-
-  " let g:syntastic_always_populate_loc_list = 1
-  " let g:syntastic_auto_loc_list = 1
-  let g:syntastic_check_on_open = 1
-  let g:syntastic_check_on_wq = 0
-  let g:syntastic_fsharp_checkers = ['syntax']
-endfunction
-
 function! s:languageclient()
   let g:deoplete#enable_at_startup = 1
   let g:LanguageClient_serverCommands = {
-    \ 'fsharp': ['dotnet', '/home/alice/.fsharp-lsp/src/FSharpLanguageServer/bin/Release/netcoreapp2.0/FSharpLanguageServer.dll']
+    \ 'fsharp': g:fsharp#languageserver_command
     \ }
 
   nnoremap <F5> :call LanguageClient_contextMenu()<CR>
@@ -226,7 +213,6 @@ function! s:languageclient()
 endfunction
 
 call s:setup()
-call s:syntastic()
 call s:languageclient()
 
 " let g:syntastic_fsharp_checkers = ['']
