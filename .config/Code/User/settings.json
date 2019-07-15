@@ -1,5 +1,6 @@
 {
     "editor.fontFamily": "Ricty Diminished",
+    "editor.rulers": [100],
     "FSharp.lineLens.enabled": "replaceCodeLens",
     "FSharp.msbuildHost": ".net core",
     "FSharp.msbuildAutoshow": true,
@@ -43,7 +44,6 @@
     "editor.smoothScrolling": true,
     "editor.cursorSmoothCaretAnimation": true,
     "window.enableMenuBarMnemonics": false,
-    "FSharp.fsacRuntime": "netcore",
     "workbench.editor.tabSizing": "shrink",
     "latex-workshop.latex.tools": [
       {
@@ -67,12 +67,15 @@
       }
     ],
     "latex-workshop.view.pdf.viewer": "tab",
-    "FSharp.disableInMemoryProjectReferences": true,
     "FSharp.enableBackgroundSymbolCache": true,
     "editor.tabSize": 2,
     "editor.tabCompletion": "on",
-    "FSharp.linter": false,
     "explorer.confirmDelete": false,
     "csharp.suppressDotnetInstallWarning": true,
     "omnisharp.useGlobalMono": "always",
+    "FSharp.enableTouchBar": false,
+    "files.autoSave": "afterDelay",
+    "fantomas.indent": 2,
+    "editor.formatOnPaste": true,
+    "FSharp.enableReferenceCodeLens": false,
 }

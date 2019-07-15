@@ -27,6 +27,7 @@ elif [ -f "$HOME/.osx" ]; then {
   PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
   PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
   PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
+  PATH="/opt/local/bin:$PATH"
 
   MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
   MANPATH="/usr/local/opt/findutils/libexec/gnuman:$MANPATH"
