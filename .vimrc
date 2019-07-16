@@ -183,10 +183,14 @@ function! s:setup()
       \ 'do': 'bash install.sh',
       \ }
   Plug 'junegunn/fzf'
-  Plug 'cannorin/vim-fsharp-languageclient', {
-      \ 'for': 'fsharp',
-      \ 'do':  'make fsautocomplete',
-      \}
+
+  if $IONIDE_DEBUG == 1
+    Plug '~/codes/Ionide-vim'
+  else
+    Plug 'ionide/Ionide-vim', {
+        \ 'do':  'make fsautocomplete',
+        \}
+  endif
 
   if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
