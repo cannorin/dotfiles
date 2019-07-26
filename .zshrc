@@ -200,6 +200,16 @@ function git-reset-author() {
   git commit --amend --reset-author
 }
 
+function git-set-author-github-company() {
+  git config --local --add user.email "cannorin@peano-system.jp"
+  git config --local --add user.name "cannorin"
+}
+
+function git-reset-author-github-company() {
+  git-set-author-github-company
+  git commit --amend --reset-author
+}
+
 alias git-commit-today='git commit -m "$(LANG=C date)"'
 
 function git-unignore() {
