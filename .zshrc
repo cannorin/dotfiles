@@ -11,6 +11,7 @@ export PATH=$HOME/.local/bin:$PATH
 export PATH=$PATH:/usr/sbin:/usr/local/sbin:/usr/local/heroku/bin:$HOME/.cabal/bin
 export PATH=$PATH:$HOME/.opam/4.06.0/bin
 export PATH=$PATH:$HOME/.dotnet/tools
+export PATH=$PATH:/Users/alice/Library/Developer/Xamarin/android-sdk-macosx/platform-tools
 
 if [ -f "$HOME/windows" ]; then {
   export DISPLAY=localhost:0.0
@@ -197,6 +198,16 @@ function git-set-author() {
 
 function git-reset-author() {
   git-set-author
+  git commit --amend --reset-author
+}
+
+function git-set-author-github-company() {
+  git config --local --add user.email "cannorin@peano-system.jp"
+  git config --local --add user.name "cannorin"
+}
+
+function git-reset-author-github-company() {
+  git-set-author-github-company
   git commit --amend --reset-author
 }
 

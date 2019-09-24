@@ -218,6 +218,13 @@ function! s:languageclient()
   nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
   nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
   nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+  if has('nvim') && exists('*nvim_open_win')
+    set updatetime=1000
+    augroup FSharpShowTooltip
+      autocmd!
+      autocmd CursorHold *.fs call fsharp#showTooltip()
+    augroup END
+  endif
 endfunction
 
 call s:setup()
