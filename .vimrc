@@ -31,7 +31,7 @@ set display=uhex
 set number
 set scrolloff=2
 set shortmess+=I
-colorscheme desert
+colorscheme default
 
 if exists('g:gui_oni')
   set noswapfile
@@ -172,11 +172,6 @@ function! s:setup()
   endif
   call plug#begin('~/.vim/plugged')
 
-  Plug 'tpope/vim-dispatch'
-  Plug 'tpope/vim-pathogen'
-  Plug 'scrooloose/syntastic'
-  Plug 'Shougo/unite.vim'
-  Plug 'ervandew/supertab'
   Plug 'qnighy/satysfi.vim'
   Plug 'autozimu/LanguageClient-neovim', {
       \ 'branch': 'next',
@@ -191,6 +186,8 @@ function! s:setup()
         \ 'do':  'make fsautocomplete',
         \}
   endif
+
+  Plug 'tidalcycles/vim-tidal'
 
   if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -208,6 +205,13 @@ function! s:languageclient()
   let g:LanguageClient_serverCommands = {
     \ 'fsharp': g:fsharp#languageserver_command
     \ }
+
+  if has('nvim') && exists('*nvim_open_win')
+    augroup FSharpShowTooltip
+      autocmd!
+      autocmd CursorHold *.fs call fsharp#showTooltip()
+    augroup END
+  endif
 
   nnoremap <F5> :call LanguageClient_contextMenu()<CR>
   " Or map each action separately
