@@ -206,25 +206,21 @@ function! s:languageclient()
     \ 'fsharp': g:fsharp#languageserver_command
     \ }
 
-  if has('nvim') && exists('*nvim_open_win')
-    augroup FSharpShowTooltip
-      autocmd!
-      autocmd CursorHold *.fs call fsharp#showTooltip()
-    augroup END
-  endif
-
   nnoremap <F5> :call LanguageClient_contextMenu()<CR>
   " Or map each action separately
   nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
   nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
   nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+
   if has('nvim') && exists('*nvim_open_win')
     set updatetime=1000
     augroup FSharpShowTooltip
       autocmd!
-      autocmd CursorHold *.fs call fsharp#showTooltip()
+      autocmd CursorHold *.fs,*.fsi,*.fsx call fsharp#showTooltip()
     augroup END
   endif
+
+  let g:fsharp#fsharp_interactive_command = "fsharpi"
 endfunction
 
 call s:setup()

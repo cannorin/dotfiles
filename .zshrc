@@ -4,9 +4,10 @@ export FPATH=$FPATH:~/.local/share/zsh/functions/Completion
 autoload -U compinit
 compinit -u
 
-alias vim="nvim"
+if [ -x "$(command -v nvim)" ]; then alias vim="nvim"; fi
 
 export EDITOR=vim
+
 export PATH=$HOME/.local/bin:$PATH
 export PATH=$PATH:/usr/sbin:/usr/local/sbin:/usr/local/heroku/bin:$HOME/.cabal/bin
 export PATH=$PATH:$HOME/.opam/4.06.0/bin
@@ -72,7 +73,7 @@ fi
 
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
-ssh-add ~/.ssh/id_rsa* > /dev/null 2>&1
+if [ -f "$HOME/.ssh/id_rsa" ]; then ssh-add ~/.ssh/id_rsa* > /dev/null 2>&1; fi
 
 setopt auto_pushd nolistbeep list_packed
 setopt auto_menu auto_cd correct auto_name_dirs auto_remove_slash
@@ -150,26 +151,17 @@ function google() {
 function winexe() {
   [ $# -eq 0 ] &&
   {
-    echo "Usage: exehandler filename"
+    echo "Usage: winexe filename"
     return 0
   }
-  [ -f $1 ] ||
+  EXEPATH="$(realpath $1)"
+  [ -f "$EXEPATH" ] ||
   {
-    echo winexe: $1 not found
+    echo winexe: "$EXEPATH" not found
     return -1
   }
 
-  EXEPATH="$(realpath $1)"
-  checkdn="
-  try
-  {
-      System.Reflection.AssemblyName.GetAssemblyName(\"$EXEPATH\");
-      Environment.Exit(0);
-  }
-  catch(Exception e)
-  {
-      Environment.Exit(1);
-  }"
+  checkdn="try { System.Reflection.AssemblyName.GetAssemblyName(\"$EXEPATH\"); Environment.Exit(0); } catch(Exception e) { Environment.Exit(1); }"
   
   echo $checkdn | csharp >/dev/null 2>&1
   if [ $? -ne 0 ]; then
