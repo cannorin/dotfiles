@@ -35,7 +35,7 @@
     "explorer.confirmDragAndDrop": false,
     "FSharp.externalAutocomplete": false,
     "editor.minimap.maxColumn": 30,
-    "window.zoomLevel": -0.5,
+    "window.zoomLevel": 0,
     "editor.fontSize": 16,
     "editor.fontLigatures": true,
     "editor.minimap.renderCharacters": false,
@@ -84,4 +84,7 @@
     "editor.detectIndentation": false,
     "aws.telemetry": false,
     "aws.profile": "default",
+    "files.associations": {
+      "*.tidal": "haskell"
+    }
 }
