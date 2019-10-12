@@ -205,6 +205,9 @@ endfunction
 
 function! s:languageclient()
   let g:deoplete#enable_at_startup = 1
+  call deoplete#custom#option({
+    \ 'auto_complete_delay': 100,
+    \ })
   let g:LanguageClient_serverCommands = {
     \ 'fsharp': g:fsharp#languageserver_command
     \ }
