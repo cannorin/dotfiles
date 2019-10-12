@@ -31,7 +31,6 @@ set display=uhex
 set number
 set scrolloff=2
 set shortmess+=I
-colorscheme desert
 
 if exists('g:gui_oni')
   set noswapfile
@@ -160,7 +159,6 @@ map <silent> [Tag]p :tabprevious<CR>
 "--------------
 
 function! s:setup()
-
   if !exists('g:gui_oni') 
   \ && (empty(glob('~/.vim/autoload/plug.vim'))
   \ ||  empty(glob('~/.local/share/nvim/site/autoload/plug.vim')))
@@ -172,11 +170,6 @@ function! s:setup()
   endif
   call plug#begin('~/.vim/plugged')
 
-  Plug 'tpope/vim-dispatch'
-  Plug 'tpope/vim-pathogen'
-  Plug 'scrooloose/syntastic'
-  Plug 'Shougo/unite.vim'
-  Plug 'ervandew/supertab'
   Plug 'qnighy/satysfi.vim'
   Plug 'autozimu/LanguageClient-neovim', {
       \ 'branch': 'next',
@@ -192,6 +185,8 @@ function! s:setup()
         \}
   endif
 
+  Plug 'tidalcycles/vim-tidal'
+
   if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   else
@@ -203,31 +198,40 @@ function! s:setup()
   call plug#end()
 endfunction
 
+function s:setLSPShortcuts()
+  nnoremap <silent> xd :call LanguageClient#textDocument_definition()<CR>
+  nnoremap <silent> xn :call LanguageClient#textDocument_rename()<CR>
+  nnoremap <silent> xf :call LanguageClient#textDocument_formatting()<CR>
+  nnoremap <silent> xt :call LanguageClient#textDocument_typeDefinition()<CR>
+  nnoremap <silent> xr :call LanguageClient#textDocument_references()<CR>
+  nnoremap <silent> xh :call LanguageClient#textDocument_hover()<CR>
+  nnoremap <silent> xs :call LanguageClient#textDocument_documentSymbol()<CR>
+  nnoremap <silent> xa :call LanguageClient#textDocument_codeAction()<CR>
+  nnoremap <silent> xx :call LanguageClient_contextMenu()<CR>
+endfunction()
+
 function! s:languageclient()
   let g:deoplete#enable_at_startup = 1
   call deoplete#custom#option({
     \ 'auto_complete_delay': 100,
     \ })
-  let g:LanguageClient_serverCommands = {
-    \ 'fsharp': g:fsharp#languageserver_command
-    \ }
 
-  nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-  " Or map each action separately
-  nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-  nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-  nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
   if has('nvim') && exists('*nvim_open_win')
     set updatetime=1000
     augroup FSharpShowTooltip
       autocmd!
-      autocmd CursorHold *.fs call fsharp#showTooltip()
+      autocmd CursorHold *.fs,*.fsi,*.fsx call fsharp#showTooltip()
     augroup END
   endif
+
+  " let g:fsharp#fsharp_interactive_command = "fsharpi"
+  let g:fsharp#exclude_project_directories = ['paket-files']
+  let g:fsharp#linter = 0
+  let g:fsharp#unused_opens_analyzer = 1
+  let g:fsharp#unused_declarations_analyzer = 1
 endfunction
 
 call s:setup()
 call s:languageclient()
-
-" let g:syntastic_fsharp_checkers = ['']
+call s:setLSPShortcuts()
 
