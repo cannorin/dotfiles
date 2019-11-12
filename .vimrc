@@ -185,7 +185,7 @@ function! s:setup()
         \}
   endif
 
-  Plug 'tidalcycles/vim-tidal'
+  Plug 'flupe/vim-tidal'
 
   if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -229,6 +229,9 @@ function! s:languageclient()
   let g:fsharp#linter = 0
   let g:fsharp#unused_opens_analyzer = 1
   let g:fsharp#unused_declarations_analyzer = 1
+
+  let g:tidal_ghci = "stack exec ghci --"
+  let g:tidal_target = "terminal"
 endfunction
 
 call s:setup()
