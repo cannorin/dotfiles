@@ -224,11 +224,13 @@ function! s:languageclient()
     augroup END
   endif
 
-  " let g:fsharp#fsharp_interactive_command = "fsharpi"
   let g:fsharp#exclude_project_directories = ['paket-files']
   let g:fsharp#linter = 0
   let g:fsharp#unused_opens_analyzer = 1
   let g:fsharp#unused_declarations_analyzer = 1
+
+  " let g:fsharp#fsharp_interactive_command = "fsharpi"
+  let g:fsharp#fsi_extra_parameters = ['--langversion:preview']
 
   let g:tidal_ghci = "stack exec ghci --"
   let g:tidal_target = "terminal"
