@@ -13,6 +13,7 @@ export PATH=$PATH:/usr/sbin:/usr/local/sbin:/usr/local/heroku/bin:$HOME/.cabal/b
 export PATH=$PATH:$HOME/.opam/4.06.0/bin
 export PATH=$PATH:$HOME/.dotnet/tools
 export PATH=$PATH:/Users/alice/Library/Developer/Xamarin/android-sdk-macosx/platform-tools
+export PATH=$PATH:$HOME/scilab-6.0.2/bin
 
 if [ -f "$HOME/windows" ]; then {
   export DISPLAY=localhost:0.0
