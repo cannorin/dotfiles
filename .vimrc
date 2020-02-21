@@ -149,10 +149,13 @@ for n in range(1, 9)
     execute 'nnoremap <silent> [Tag]'.n  ':<C-u>tabnext'.n.'<CR>'
 endfor
 
+nnoremap <silent> [Tag]0 :tablast<CR>
 map <silent> [Tag]c :tablast <bar> tabnew<CR>
 map <silent> [Tag]x :tabclose<CR>
-map <silent> [Tag]n :tabnext<CR>
-map <silent> [Tag]p :tabprevious<CR>
+map <silent> [Tag]l :tabnext<CR>
+map <silent> [Tag]L :+tabmove<CR>
+map <silent> [Tag]h :tabprevious<CR>
+map <silent> [Tag]H :-tabmove<CR>
 
 "--------------
 "  Plugins
@@ -224,13 +227,25 @@ function! s:languageclient()
     augroup END
   endif
 
+  let g:LanguageClient_loggingFile = expand('~/.vim/LanguageClient.log')
+  let g:LanguageClient_serverStderr = expand('~/.vim/LanguageClient.stderr.log')
+
+  let g:LanguageClient_serverCommands = {
+    \ 'ocaml': ['~/codes/work/ocaml-lsp/_build/install/default/bin/ocamllsp', '--log-file=/home/alice/ocamllsp.log'],
+    \ }
+
+  let g:LanguageClient_rootMarkers = {
+    \ 'ocaml': ['dune-project'],
+    \ } 
+
   let g:fsharp#exclude_project_directories = ['paket-files']
   let g:fsharp#linter = 0
   let g:fsharp#unused_opens_analyzer = 1
   let g:fsharp#unused_declarations_analyzer = 1
 
-  " let g:fsharp#fsharp_interactive_command = "fsharpi"
-  let g:fsharp#fsi_extra_parameters = ['--langversion:preview']
+  let g:fsharp#fsharp_interactive_command = "fsharpi"
+  let g:fsharp#use_sdk_scripts = 0
+  " let g:fsharp#fsi_extra_parameters = ['--langversion:preview']
 
   let g:tidal_ghci = "stack exec ghci --"
   let g:tidal_target = "terminal"

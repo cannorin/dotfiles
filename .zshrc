@@ -230,5 +230,4 @@ alias create-system-backup="sudo mksquashfs / /media/alice/Elements/linux-backup
 
 #[ -f "$HOME/codes/misc/FsxTools.dll" ] && alias fsharpi="fsharpi -r $HOME/codes/misc/FsxTools.dll"
 
-
-
+test -r $HOME/.opam/opam-init/init.zsh && . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
