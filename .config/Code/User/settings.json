@@ -82,4 +82,11 @@
     },
     "FSharp.enableReferenceCodeLens": false,
     "FSharp.useSdkScripts": true,
+    "ocaml.lsp.path": "/home/alice/codes/work/ocaml-lsp/_build/install/default/bin/ocamllsp",
+    "ocaml-language-server.trace.server": "messages",
+    "FSharp.trace.server": "messages",
+    "window.restoreWindows": "one",
+    "tidalcycles.sounds.paths": [
+      "/home/alice/.local/share/SuperCollider/downloaded-quarks/Dirt-Samples"
+    ],
 }

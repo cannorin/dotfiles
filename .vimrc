@@ -176,6 +176,7 @@ function! s:setup()
   Plug 'qnighy/satysfi.vim'
   Plug 'autozimu/LanguageClient-neovim', {
       \ 'branch': 'next',
+      \ 'tag': '0.1.155',
       \ 'do': 'bash install.sh',
       \ }
   Plug 'junegunn/fzf'
