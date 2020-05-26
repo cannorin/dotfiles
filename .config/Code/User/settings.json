@@ -89,4 +89,14 @@
     "tidalcycles.sounds.paths": [
       "/home/alice/.local/share/SuperCollider/downloaded-quarks/Dirt-Samples"
     ],
+    "java.semanticHighlighting.enabled": true,
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "files.exclude": {
+      "**/.classpath": true,
+      "**/.project": true,
+      "**/.settings": true,
+      "**/.factorypath": true
+    },
+    "java.refactor.renameFromFileExplorer": "autoApply",
 }
