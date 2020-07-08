@@ -191,12 +191,16 @@ function! s:setup()
 
   Plug 'flupe/vim-tidal'
 
-  if has('nvim')
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  if has('python3')
+    if has('nvim')
+      Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    else
+      Plug 'Shougo/deoplete.nvim'
+      Plug 'roxma/nvim-yarp'
+      Plug 'roxma/vim-hug-neovim-rpc'
+    endif
   else
-    Plug 'Shougo/deoplete.nvim'
-    Plug 'roxma/nvim-yarp'
-    Plug 'roxma/vim-hug-neovim-rpc'
+    Plug 'lifepillar/vim-mucomplete'
   endif
 
   call plug#end()
@@ -215,10 +219,19 @@ function s:setLSPShortcuts()
 endfunction()
 
 function! s:languageclient()
-  let g:deoplete#enable_at_startup = 1
-  call deoplete#custom#option({
-    \ 'auto_complete_delay': 100,
-    \ })
+
+  if has('python3')
+    let g:deoplete#enable_at_startup = 1
+    call deoplete#custom#option({
+      \ 'auto_complete_delay': 100,
+      \ })
+  else
+    set completeopt+=menuone
+    set completeopt+=noselect
+    set shortmess+=c
+    set belloff+=ctrlg
+    let g:mucomplete#enable_auto_at_startup = 1
+  endif
 
   if has('nvim') && exists('*nvim_open_win')
     set updatetime=1000
@@ -233,6 +246,10 @@ function! s:languageclient()
 
   let g:LanguageClient_serverCommands = {
     \ 'ocaml': ['~/codes/work/ocaml-lsp/_build/install/default/bin/ocamllsp', '--log-file=/home/alice/ocamllsp.log'],
+    \ 'c': ['ccls', '--log-file=/tmp/cc.log'],
+    \ 'cpp': ['ccls', '--log-file=/tmp/cc.log'],
+    \ 'cuda': ['ccls', '--log-file=/tmp/cc.log'],
+    \ 'objc': ['ccls', '--log-file=/tmp/cc.log'],
     \ }
 
   let g:LanguageClient_rootMarkers = {
