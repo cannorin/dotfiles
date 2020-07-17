@@ -73,6 +73,7 @@ else {
 }
 fi
 
+eval `ssh-agent` > /dev/null
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 if [ -f "$HOME/.ssh/id_rsa" ]; then ssh-add ~/.ssh/id_rsa* > /dev/null 2>&1; fi
@@ -221,7 +222,7 @@ function git-unignore() {
 function c() {
   cmpargs=$(echo $@ | awk -F '--' '{$0=$1}1')
   runargs=$(echo $@ | awk -F '--' '{$0=$2}1')
-  gcc -O3 -o a.out $cmpargs && {
+  gcc -o a.out $cmpargs && {
     ./a.out $runargs
     rm a.out
   }

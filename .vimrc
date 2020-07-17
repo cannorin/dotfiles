@@ -189,6 +189,8 @@ function! s:setup()
         \}
   endif
 
+  Plug 'cohama/lexima.vim'
+
   Plug 'flupe/vim-tidal'
 
   if has('python3')
