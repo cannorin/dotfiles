@@ -68,14 +68,19 @@ else {
   PERL_LOCAL_LIB_ROOT="/home/alice/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
   PERL_MB_OPT="--install_base \"/home/alice/perl5\""; export PERL_MB_OPT;
   PERL_MM_OPT="INSTALL_BASE=/home/alice/perl5"; export PERL_MM_OPT;
-
-  eval `ssh-agent` > /dev/null
 }
 fi
 
-eval `ssh-agent` > /dev/null
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
+# Setup ssh-agent
+if [ -f ~/.ssh-agent ]; then
+    . ~/.ssh-agent >/dev/null
+  fi
+if [ -z "$SSH_AGENT_PID" ] || ! kill -0 $SSH_AGENT_PID 2>/dev/null; then
+    ssh-agent > ~/.ssh-agent
+    . ~/.ssh-agent >/dev/null
+fi
 if [ -f "$HOME/.ssh/id_rsa" ]; then ssh-add ~/.ssh/id_rsa* > /dev/null 2>&1; fi
 
 setopt auto_pushd nolistbeep list_packed
