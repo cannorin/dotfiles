@@ -247,7 +247,7 @@ function! s:languageclient()
   let g:LanguageClient_serverStderr = expand('~/.vim/LanguageClient.stderr.log')
 
   let g:LanguageClient_serverCommands = {
-    \ 'ocaml': ['~/codes/work/ocaml-lsp/_build/install/default/bin/ocamllsp', '--log-file=/home/alice/ocamllsp.log'],
+    \ 'ocaml': ['ocamllsp', '--log-file=/tmp/ocamllsp.log'],
     \ 'c': ['ccls', '--log-file=/tmp/cc.log'],
     \ 'cpp': ['ccls', '--log-file=/tmp/cc.log'],
     \ 'cuda': ['ccls', '--log-file=/tmp/cc.log'],
