@@ -18,7 +18,7 @@ endif
 if has("syntax")
   syntax on
 endif
-filetype plugin on 
+filetype plugin on
 
 set autoindent
 
@@ -76,7 +76,7 @@ highlight CursorLine ctermbg=black guibg=black
 "    Edit
 "--------------
 
-let putline_tw = 30 
+let putline_tw = 30
 inoremap <Leader>line <ESC>:call <SID>PutLine(putline_tw)<CR>A
 function! s:PutLine(len)
     let plen = a:len - strlen(getline('.'))
@@ -103,7 +103,7 @@ au FileType cs setl sw=4 ts=4 sts=4
 au FileType fsharp setl sw=2 ts=2 sts=2
 au FileType nml setl sw=2 ts=2 sts=2
 au FileType make set noexpandtab sw=4 ts=4 sts=4
-set writeany 
+set writeany
 
 "--------------
 "  Search
@@ -162,7 +162,7 @@ map <silent> [Tag]H :-tabmove<CR>
 "--------------
 
 function! s:setup()
-  if !exists('g:gui_oni') 
+  if !exists('g:gui_oni')
   \ && (empty(glob('~/.vim/autoload/plug.vim'))
   \ ||  empty(glob('~/.local/share/nvim/site/autoload/plug.vim')))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -173,16 +173,14 @@ function! s:setup()
   endif
   call plug#begin('~/.vim/plugged')
 
-  Plug 'qnighy/satysfi.vim'
-  Plug 'autozimu/LanguageClient-neovim', {
-      \ 'branch': 'next',
-      \ 'tag': '0.1.155',
-      \ 'do': 'bash install.sh',
-      \ }
-  Plug 'junegunn/fzf'
+  if $LSPCONFIG == 1
+    Plug 'neovim/nvim-lspconfig'
+  endif
+
+  Plug 'hrsh7th/nvim-compe'
 
   if $IONIDE_DEBUG == 1
-    Plug '~/codes/Ionide-vim'
+    Plug '~/Documents/codes/Ionide-vim'
   else
     Plug 'ionide/Ionide-vim', {
         \ 'do':  'make fsautocomplete',
@@ -191,50 +189,10 @@ function! s:setup()
 
   Plug 'cohama/lexima.vim'
 
-  Plug 'flupe/vim-tidal'
-
-  if has('python3')
-    if has('nvim')
-      Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    else
-      Plug 'Shougo/deoplete.nvim'
-      Plug 'roxma/nvim-yarp'
-      Plug 'roxma/vim-hug-neovim-rpc'
-    endif
-  else
-    Plug 'lifepillar/vim-mucomplete'
-  endif
-
   call plug#end()
 endfunction
 
-function s:setLSPShortcuts()
-  nnoremap <silent> xd :call LanguageClient#textDocument_definition()<CR>
-  nnoremap <silent> xn :call LanguageClient#textDocument_rename()<CR>
-  nnoremap <silent> xf :call LanguageClient#textDocument_formatting()<CR>
-  nnoremap <silent> xt :call LanguageClient#textDocument_typeDefinition()<CR>
-  nnoremap <silent> xr :call LanguageClient#textDocument_references()<CR>
-  nnoremap <silent> xh :call LanguageClient#textDocument_hover()<CR>
-  nnoremap <silent> xs :call LanguageClient#textDocument_documentSymbol()<CR>
-  nnoremap <silent> xa :call LanguageClient#textDocument_codeAction()<CR>
-  nnoremap <silent> xx :call LanguageClient_contextMenu()<CR>
-endfunction()
-
 function! s:languageclient()
-
-  if has('python3')
-    let g:deoplete#enable_at_startup = 1
-    call deoplete#custom#option({
-      \ 'auto_complete_delay': 100,
-      \ })
-  else
-    set completeopt+=menuone
-    set completeopt+=noselect
-    set shortmess+=c
-    set belloff+=ctrlg
-    let g:mucomplete#enable_auto_at_startup = 1
-  endif
-
   if has('nvim') && exists('*nvim_open_win')
     set updatetime=1000
     augroup FSharpShowTooltip
@@ -243,36 +201,17 @@ function! s:languageclient()
     augroup END
   endif
 
-  let g:LanguageClient_loggingFile = expand('~/.vim/LanguageClient.log')
-  let g:LanguageClient_serverStderr = expand('~/.vim/LanguageClient.stderr.log')
-
-  let g:LanguageClient_serverCommands = {
-    \ 'ocaml': ['ocamllsp', '--log-file=/tmp/ocamllsp.log'],
-    \ 'c': ['ccls', '--log-file=/tmp/cc.log'],
-    \ 'cpp': ['ccls', '--log-file=/tmp/cc.log'],
-    \ 'cuda': ['ccls', '--log-file=/tmp/cc.log'],
-    \ 'objc': ['ccls', '--log-file=/tmp/cc.log'],
-    \ }
-
-  let g:LanguageClient_rootMarkers = {
-    \ 'ocaml': ['dune-project'],
-    \ } 
-
   let g:fsharp#exclude_project_directories = ['paket-files']
   let g:fsharp#linter = 0
-  let g:fsharp#unused_opens_analyzer = 1
-  let g:fsharp#unused_declarations_analyzer = 1
+  let g:fsharp#enable_reference_code_lens = 1
+  let g:fsharp#line_lens = { 'enabled': 'never', 'prefix': '' }
 
   let g:fsharp#fsharp_interactive_command = "fsharpi"
   let g:fsharp#use_sdk_scripts = 0
   " let g:fsharp#fsi_extra_parameters = ['--langversion:preview']
-
-  let g:tidal_ghci = "stack exec ghci --"
-  let g:tidal_target = "terminal"
 endfunction
 
 call s:setup()
 call s:languageclient()
-call s:setLSPShortcuts()
 
 
