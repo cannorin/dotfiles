@@ -182,7 +182,7 @@ function! s:setup()
   Plug 'junegunn/fzf'
 
   if $IONIDE_DEBUG == 1
-    Plug '~/codes/Ionide-vim'
+    Plug '~/Documents/codes/Ionide-vim'
   else
     Plug 'ionide/Ionide-vim', {
         \ 'do':  'make fsautocomplete',
