@@ -187,12 +187,23 @@ function! s:setup()
         \}
   endif
 
+  if has('nvim')
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  else
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'roxma/nvim-yarp'
+    Plug 'roxma/vim-hug-neovim-rpc'
+  endif
+  Plug 'deoplete-plugins/deoplete-lsp'
+
   Plug 'cohama/lexima.vim'
 
   call plug#end()
 endfunction
 
 function! s:languageclient()
+  let g:deoplete#enable_at_startup = 1
+
   if has('nvim') && exists('*nvim_open_win')
     set updatetime=1000
     augroup FSharpShowTooltip
