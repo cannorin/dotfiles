@@ -71,7 +71,6 @@ augroup END
 :hi CursorLine gui=underline
 highlight CursorLine ctermbg=black guibg=black
 
-
 "--------------
 "    Edit
 "--------------
@@ -220,6 +219,15 @@ function! s:languageclient()
   let g:fsharp#fsharp_interactive_command = "fsharpi"
   let g:fsharp#use_sdk_scripts = 0
   " let g:fsharp#fsi_extra_parameters = ['--langversion:preview']
+ 
+  lua
+     \ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+     \  vim.lsp.diagnostic.on_publish_diagnostics, {
+     \    virtual_text = {
+     \      prefix = '!',
+     \    },
+     \  }
+     \ )
 endfunction
 
 call s:setup()
