@@ -172,6 +172,8 @@ function! s:setup()
   endif
   call plug#begin('~/.vim/plugged')
 
+  Plug 'w0ng/vim-hybrid'
+
   if $LSPCONFIG == 1
     Plug 'neovim/nvim-lspconfig'
   endif
@@ -196,6 +198,8 @@ function! s:setup()
   Plug 'cohama/lexima.vim'
 
   call plug#end()
+  set background=dark
+  colorscheme hybrid
 endfunction
 
 function! s:languageclient()
@@ -226,6 +230,7 @@ function! s:languageclient()
      \    },
      \  }
      \ )
+
 endfunction
 
 call s:setup()
