@@ -245,7 +245,6 @@ function! s:languageclient()
 
   let g:LanguageClient_loggingFile = expand('~/.vim/LanguageClient.log')
   let g:LanguageClient_serverStderr = expand('~/.vim/LanguageClient.stderr.log')
-
   let g:LanguageClient_serverCommands = {
     \ 'ocaml': ['ocamllsp', '--log-file=/tmp/ocamllsp.log'],
     \ 'c': ['ccls', '--log-file=/tmp/cc.log'],
@@ -253,10 +252,39 @@ function! s:languageclient()
     \ 'cuda': ['ccls', '--log-file=/tmp/cc.log'],
     \ 'objc': ['ccls', '--log-file=/tmp/cc.log'],
     \ }
-
   let g:LanguageClient_rootMarkers = {
     \ 'ocaml': ['dune-project'],
     \ } 
+  let g:LanguageClient_diagnosticsDisplay = { 
+      \  1: {
+      \    'name': 'Error',
+      \    'texthl': 'LanguageClientError',
+      \    'signText': 'E',
+      \    'signTexthl': 'LanguageClientErrorSign',
+      \    'virtualTexthl': 'Error',
+      \  },
+      \  2: {
+      \    'name': 'Warning',
+      \    'texthl': 'LanguageClientWarning',
+      \    'signText': 'W',
+      \    'signTexthl': 'LanguageClientWarningSign',
+      \    'virtualTexthl': 'Todo',
+      \  },
+      \  3: {
+      \    'name': 'Information',
+      \    'texthl': 'LanguageClientInfo',
+      \    'signText': 'I',
+      \    'signTexthl': 'LanguageClientInfoign',
+      \    'virtualTexthl': 'Todo',
+      \  },
+      \  4: {
+      \    'name': 'Hint',
+      \    'texthl': 'LanguageClientInfo',
+      \    'signText': 'H',
+      \    'signTexthl': 'LanguageClientInfoSign',
+      \    'virtualTexthl': 'Todo',
+      \  },
+      \}
 
   let g:fsharp#exclude_project_directories = ['paket-files']
   let g:fsharp#linter = 0
