@@ -217,6 +217,11 @@ function! s:languageclient()
   let g:fsharp#linter = 0
   let g:fsharp#enable_reference_code_lens = 1
   let g:fsharp#line_lens = { 'enabled': 'never', 'prefix': '' }
+  let g:fsharp#languageserver_command =
+    \ [ 'dotnet',
+    \   'fsautocomplete',
+    \   '--background-service-enabled'
+    \ ]
 
   let g:fsharp#fsharp_interactive_command = "fsharpi"
   let g:fsharp#use_sdk_scripts = 0
