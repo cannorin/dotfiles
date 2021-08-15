@@ -105,6 +105,13 @@ au FileType make set noexpandtab sw=4 ts=4 sts=4
 set writeany
 
 "--------------
+"  Mapping
+"--------------
+
+noremap <C-J> <C-E>
+noremap <C-K> <C-Y>
+
+"--------------
 "  Search
 "--------------
 
@@ -172,11 +179,10 @@ function! s:setup()
   endif
   call plug#begin('~/.vim/plugged')
 
-  Plug 'w0ng/vim-hybrid'
+  Plug 'tomasiser/vim-code-dark'
+  Plug 'vim-airline/vim-airline'
 
-  if $LSPCONFIG == 1
-    Plug 'neovim/nvim-lspconfig'
-  endif
+  Plug 'neovim/nvim-lspconfig'
 
   if $IONIDE_DEBUG == 1
     Plug '~/Documents/codes/Ionide-vim'
@@ -197,9 +203,46 @@ function! s:setup()
 
   Plug 'cohama/lexima.vim'
 
+  Plug 'lambdalisue/fern.vim'
+
   call plug#end()
-  set background=dark
-  colorscheme hybrid
+
+  colorscheme codedark
+
+  call s:airline()
+  call s:fern()
+  call s:languageclient()
+endfunction
+
+function! s:airline()
+  let g:airline_theme = 'codedark'
+  let g:airline#extensions#tabline#enabled = 1
+  let g:airline#extensions#default#layout = [
+    \ [ 'a', 'b', 'c' ],
+    \ [ 'x', 'y', 'z' ]
+    \ ]
+  let g:airline_section_c = '%t %M'
+  let g:airline_section_z = get(g:, 'airline_linecolumn_prefix', '').'%3l:%-2v'
+  let g:airline#extensions#hunks#non_zero_only = 1 
+  let g:airline#extensions#tabline#fnamemod = ':t'
+  let g:airline#extensions#tabline#show_buffers = 1
+  let g:airline#extensions#tabline#show_splits = 0
+  let g:airline#extensions#tabline#show_tab_nr = 1
+  let g:airline#extensions#tabline#tab_nr_type = 1
+  let g:airline#extensions#tabline#show_close_button = 0
+endfunction
+
+function! s:fern()
+  nnoremap <C-E> :Fern . -reveal=% -drawer -toggle<CR>
+
+  function! s:init_fern() abort
+    nmap <buffer> . <Plug>(fern-action-hidden:toggle)
+  endfunction
+
+  augroup fern-custom
+    autocmd! *
+    autocmd FileType fern call s:init_fern()
+  augroup END
 endfunction
 
 function! s:languageclient()
@@ -235,10 +278,8 @@ function! s:languageclient()
      \    },
      \  }
      \ )
-
 endfunction
 
 call s:setup()
-call s:languageclient()
 
 

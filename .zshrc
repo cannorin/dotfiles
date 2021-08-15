@@ -1,5 +1,3 @@
-bindkey -v
-
 export FPATH=$FPATH:~/.local/share/zsh/functions/Completion
 autoload -U compinit
 compinit -u
@@ -92,7 +90,6 @@ setopt cdable_vars sh_word_split auto_param_keys
 
 alias ls="ls -G"
 alias ls="ls --color"
-alias richvim="VIM_RICH_MODE=1 vim"
 
 alias -s fsx=fsharpi
 alias -s csx=csharp
@@ -151,36 +148,6 @@ function extract() {
   esac
 }
 
-function google() {
-  query=$(echo "$@" | sed 's/\s/%20/g')
-  lynx "https://google.co.jp/search?q=$query"
-}
-
-function winexe() {
-  [ $# -eq 0 ] &&
-  {
-    echo "Usage: winexe filename"
-    return 0
-  }
-  EXEPATH="$(realpath $1)"
-  [ -f "$EXEPATH" ] ||
-  {
-    echo winexe: "$EXEPATH" not found
-    return -1
-  }
-
-  checkdn="try { System.Reflection.AssemblyName.GetAssemblyName(\"$EXEPATH\"); Environment.Exit(0); } catch(Exception e) { Environment.Exit(1); }"
-  
-  echo $checkdn | csharp >/dev/null 2>&1
-  if [ $? -ne 0 ]; then
-      shift;
-      wine $EXEPATH $*
-  else
-      shift;
-      mono $EXEPATH $*
-  fi
-}
-
 function git-set-author-github() {
   git config --local --add user.email "cannorin@users.noreply.github.com"
   git config --local --add user.name "cannorin"
@@ -232,9 +199,5 @@ function c() {
     rm a.out
   }
 }
-
-alias create-system-backup="sudo mksquashfs / /media/alice/Elements/linux-backup/$(LANG=C date +%F).squashfs -e media dev run mnt proc sys tmp"
-
-#[ -f "$HOME/codes/misc/FsxTools.dll" ] && alias fsharpi="fsharpi -r $HOME/codes/misc/FsxTools.dll"
 
 test -r $HOME/.opam/opam-init/init.zsh && . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
