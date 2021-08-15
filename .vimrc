@@ -18,7 +18,7 @@ endif
 if has("syntax")
   syntax on
 endif
-filetype plugin on 
+filetype plugin on
 
 set autoindent
 
@@ -71,12 +71,11 @@ augroup END
 :hi CursorLine gui=underline
 highlight CursorLine ctermbg=black guibg=black
 
-
 "--------------
 "    Edit
 "--------------
 
-let putline_tw = 30 
+let putline_tw = 30
 inoremap <Leader>line <ESC>:call <SID>PutLine(putline_tw)<CR>A
 function! s:PutLine(len)
     let plen = a:len - strlen(getline('.'))
@@ -103,7 +102,14 @@ au FileType cs setl sw=4 ts=4 sts=4
 au FileType fsharp setl sw=2 ts=2 sts=2
 au FileType nml setl sw=2 ts=2 sts=2
 au FileType make set noexpandtab sw=4 ts=4 sts=4
-set writeany 
+set writeany
+
+"--------------
+"  Mapping
+"--------------
+
+noremap <C-J> <C-E>
+noremap <C-K> <C-Y>
 
 "--------------
 "  Search
@@ -162,7 +168,7 @@ map <silent> [Tag]H :-tabmove<CR>
 "--------------
 
 function! s:setup()
-  if !exists('g:gui_oni') 
+  if !exists('g:gui_oni')
   \ && (empty(glob('~/.vim/autoload/plug.vim'))
   \ ||  empty(glob('~/.local/share/nvim/site/autoload/plug.vim')))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -173,13 +179,10 @@ function! s:setup()
   endif
   call plug#begin('~/.vim/plugged')
 
-  Plug 'qnighy/satysfi.vim'
-  Plug 'autozimu/LanguageClient-neovim', {
-      \ 'branch': 'next',
-      \ 'tag': '0.1.155',
-      \ 'do': 'bash install.sh',
-      \ }
-  Plug 'junegunn/fzf'
+  Plug 'tomasiser/vim-code-dark'
+  Plug 'vim-airline/vim-airline'
+
+  Plug 'neovim/nvim-lspconfig'
 
   if $IONIDE_DEBUG == 1
     Plug '~/Documents/codes/Ionide-vim'
@@ -189,60 +192,63 @@ function! s:setup()
         \}
   endif
 
+  if has('nvim')
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  else
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'roxma/nvim-yarp'
+    Plug 'roxma/vim-hug-neovim-rpc'
+  endif
+  Plug 'deoplete-plugins/deoplete-lsp'
+
   Plug 'cohama/lexima.vim'
 
-  Plug 'flupe/vim-tidal'
-
-  if has('python3')
-    if has('nvim')
-      Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    else
-      Plug 'Shougo/deoplete.nvim'
-      Plug 'roxma/nvim-yarp'
-      Plug 'roxma/vim-hug-neovim-rpc'
-    endif
-  else
-    Plug 'lifepillar/vim-mucomplete'
-  endif
+  Plug 'lambdalisue/fern.vim'
 
   call plug#end()
+
+  colorscheme codedark
+  
+  let g:deoplete#enable_at_startup = 1
+
+  call s:airline()
+  call s:fern()
+  call s:nvim_lsp()
+  call s:languageclient()
 endfunction
 
-function s:setLSPShortcuts()
-  nnoremap <silent> xd :call LanguageClient#textDocument_definition()<CR>
-  nnoremap <silent> xn :call LanguageClient#textDocument_rename()<CR>
-  nnoremap <silent> xf :call LanguageClient#textDocument_formatting()<CR>
-  nnoremap <silent> xt :call LanguageClient#textDocument_typeDefinition()<CR>
-  nnoremap <silent> xr :call LanguageClient#textDocument_references()<CR>
-  nnoremap <silent> xh :call LanguageClient#textDocument_hover()<CR>
-  nnoremap <silent> xs :call LanguageClient#textDocument_documentSymbol()<CR>
-  nnoremap <silent> xa :call LanguageClient#textDocument_codeAction()<CR>
-  nnoremap <silent> xx :call LanguageClient_contextMenu()<CR>
-endfunction()
+function! s:airline()
+  let g:airline_theme = 'codedark'
+  let g:airline#extensions#tabline#enabled = 1
+  let g:airline#extensions#default#layout = [
+    \ [ 'a', 'b', 'c' ],
+    \ [ 'x', 'y', 'z' ]
+    \ ]
+  let g:airline_section_c = '%t %M'
+  let g:airline_section_z = get(g:, 'airline_linecolumn_prefix', '').'%3l:%-2v'
+  let g:airline#extensions#hunks#non_zero_only = 1 
+  let g:airline#extensions#tabline#fnamemod = ':t'
+  let g:airline#extensions#tabline#show_buffers = 1
+  let g:airline#extensions#tabline#show_splits = 0
+  let g:airline#extensions#tabline#show_tab_nr = 1
+  let g:airline#extensions#tabline#tab_nr_type = 1
+  let g:airline#extensions#tabline#show_close_button = 0
+endfunction
 
-function! s:languageclient()
+function! s:fern()
+  nnoremap <C-E> :Fern . -reveal=% -drawer -toggle<CR>
 
-  if has('python3')
-    let g:deoplete#enable_at_startup = 1
-    call deoplete#custom#option({
-      \ 'auto_complete_delay': 100,
-      \ })
-  else
-    set completeopt+=menuone
-    set completeopt+=noselect
-    set shortmess+=c
-    set belloff+=ctrlg
-    let g:mucomplete#enable_auto_at_startup = 1
-  endif
+  function! s:init_fern() abort
+    nmap <buffer> . <Plug>(fern-action-hidden:toggle)
+  endfunction
 
-  if has('nvim') && exists('*nvim_open_win')
-    set updatetime=1000
-    augroup FSharpShowTooltip
-      autocmd!
-      autocmd CursorHold *.fs,*.fsi,*.fsx call fsharp#showTooltip()
-    augroup END
-  endif
+  augroup fern-custom
+    autocmd! *
+    autocmd FileType fern call s:init_fern()
+  augroup END
+endfunction
 
+function! s:languageclient_neovim()
   let g:LanguageClient_loggingFile = expand('~/.vim/LanguageClient.log')
   let g:LanguageClient_serverStderr = expand('~/.vim/LanguageClient.stderr.log')
   let g:LanguageClient_serverCommands = {
@@ -285,22 +291,45 @@ function! s:languageclient()
       \    'virtualTexthl': 'Todo',
       \  },
       \}
+endfunction
+
+function! s:nvim_lsp()
+  lua
+     \ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+     \  vim.lsp.diagnostic.on_publish_diagnostics, {
+     \    virtual_text = {
+     \      prefix = '!',
+     \    },
+     \  }
+     \ )
+endfunction
+
+function! s:languageclient()
+
+  if has('nvim') && exists('*nvim_open_win')
+    set updatetime=1000
+    augroup FSharpShowTooltip
+      autocmd!
+      autocmd CursorHold *.fs,*.fsi,*.fsx call fsharp#showTooltip()
+    augroup END
+  endif
 
   let g:fsharp#exclude_project_directories = ['paket-files']
   let g:fsharp#linter = 0
-  let g:fsharp#unused_opens_analyzer = 1
-  let g:fsharp#unused_declarations_analyzer = 1
+  let g:fsharp#enable_reference_code_lens = 1
+  let g:fsharp#line_lens = { 'enabled': 'never', 'prefix': '' }
+  let g:fsharp#languageserver_command =
+    \ [ 'dotnet',
+    \   'fsautocomplete',
+    \   '--background-service-enabled'
+    \ ]
 
   let g:fsharp#fsharp_interactive_command = "fsharpi"
   let g:fsharp#use_sdk_scripts = 0
   " let g:fsharp#fsi_extra_parameters = ['--langversion:preview']
-
-  let g:tidal_ghci = "stack exec ghci --"
-  let g:tidal_target = "terminal"
+ 
 endfunction
 
 call s:setup()
-call s:languageclient()
-call s:setLSPShortcuts()
 
 
