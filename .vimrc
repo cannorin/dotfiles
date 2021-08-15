@@ -305,7 +305,6 @@ function! s:nvim_lsp()
 endfunction
 
 function! s:languageclient()
-
   if has('nvim') && exists('*nvim_open_win')
     set updatetime=1000
     augroup FSharpShowTooltip
@@ -327,7 +326,6 @@ function! s:languageclient()
   let g:fsharp#fsharp_interactive_command = "fsharpi"
   let g:fsharp#use_sdk_scripts = 0
   " let g:fsharp#fsi_extra_parameters = ['--langversion:preview']
- 
 endfunction
 
 call s:setup()
