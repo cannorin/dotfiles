@@ -16,14 +16,6 @@ export PATH=$PATH:$HOME/scilab-6.0.2/bin
 if [ -f "$HOME/.windows" ]; then {
   export GPG_TTY=$(tty)
   export DISPLAY=localhost:0.0
-  (
-      command_path="/mnt/c/Program Files/VcXsrv/vcxsrv.exe"
-      command_name=$(basename "$command_path")
-
-      if ! tasklist.exe 2> /dev/null | fgrep -q "$command_name"; then
-          "$command_path" :0 -multiwindow -xkbmodel jp106 -xkblayout jp -clipboard -noprimary -wgl > /dev/null 2>&1 &
-      fi
-  )
 }
 elif [ -f "$HOME/.osx" ]; then {
   PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
