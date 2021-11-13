@@ -219,7 +219,7 @@ function! s:setup()
   call s:airline()
   call s:fern()
   call s:languageclient()
-  call s:nvim_lsp()
+  " call s:nvim_lsp()
 endfunction
 
 function! s:airline()
@@ -386,7 +386,7 @@ function! s:languageclient()
   let g:fsharp#fsharp_interactive_command = "fsharpi"
   let g:fsharp#show_signature_on_cursor_move = 0
   let g:fsharp#use_sdk_scripts = 1
-  let g:fsharp#lsp_auto_setup = 0
+  let g:fsharp#lsp_auto_setup = 1
 endfunction
 
 call s:setup()
