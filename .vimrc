@@ -304,7 +304,7 @@ lua << EOF
           }),
           ['<CR>'] = cmp.mapping.confirm({ select = true }),
         },
-        sources = cmp.config.sources({ { name = 'nvim_lsp' }, { name = 'vsnip' } }, { { name = 'buffer' } })
+        sources = cmp.config.sources({ { name = 'nvim_lsp' }, { name = 'vsnip' }, { name = 'buffer' } })
       })
 
       -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
@@ -367,6 +367,9 @@ lua << EOF
        prefix = '!',
      },
    }
+  )
+  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+    vim.lsp.handlers.hover, { focusable = false }
   )
 EOF
 endfunction
