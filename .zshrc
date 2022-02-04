@@ -6,6 +6,7 @@ if [ -x "$(command -v nvim)" ]; then alias vim="nvim"; fi
 
 export EDITOR=vim
 
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 export PATH=$HOME/.local/bin:$PATH
 export PATH=$PATH:/usr/sbin:/usr/local/sbin:/usr/local/heroku/bin:$HOME/.cabal/bin
 export PATH=$PATH:$HOME/.opam/4.06.0/bin
@@ -193,3 +194,5 @@ function c() {
 }
 
 test -r $HOME/.opam/opam-init/init.zsh && . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
