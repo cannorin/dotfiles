@@ -190,9 +190,7 @@ function! s:setup()
   if $IONIDE_DEBUG == 1
     Plug '~/Documents/codes/Ionide-vim'
   else
-    Plug 'ionide/Ionide-vim', {
-        \ 'do':  'make fsautocomplete',
-        \}
+    Plug 'ionide/Ionide-vim'
   endif
 
   if has('nvim')
@@ -378,14 +376,8 @@ function! s:languageclient()
   let g:fsharp#linter = 0
   let g:fsharp#enable_reference_code_lens = 0
   let g:fsharp#line_lens = { 'enabled': 'never', 'prefix': '' }
-  let g:fsharp#fsautocomplete_command =
-    \ [
-    \   'fsautocomplete',
-    \   '--background-service-enabled'
-    \ ]
-  let g:fsharp#fsharp_interactive_command = "fsharpi"
+  let g:fsharp#fsharp_interactive_command = "dotnet fsi"
   let g:fsharp#show_signature_on_cursor_move = 0
-  let g:fsharp#use_sdk_scripts = 1
   let g:fsharp#lsp_auto_setup = 1
 endfunction
 
