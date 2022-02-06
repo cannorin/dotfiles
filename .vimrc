@@ -380,7 +380,6 @@ function! s:languageclient()
   let g:fsharp#line_lens = { 'enabled': 'never', 'prefix': '' }
   let g:fsharp#fsautocomplete_command =
     \ [
-    \   'env', 'DOTNET_ROLL_FORWARD=LatestMajor',
     \   'fsautocomplete',
     \   '--background-service-enabled'
     \ ]
