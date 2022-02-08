@@ -204,6 +204,8 @@ function! s:setup()
     Plug 'hrsh7th/nvim-cmp', { 'branch': 'main' }
     Plug 'hrsh7th/cmp-vsnip', { 'branch': 'main' }
     Plug 'hrsh7th/vim-vsnip'
+    Plug 'antoinemadec/FixCursorHold.nvim'
+    Plug 'folke/trouble.nvim'
   else
     Plug 'Shougo/deoplete.nvim'
     Plug 'roxma/nvim-yarp'
@@ -221,6 +223,7 @@ function! s:setup()
 
   call s:airline()
   call s:fern()
+  call s:trouble()
   call s:language_settings()
   call s:autocompletion()
   call s:nvim_lsp()
@@ -228,7 +231,6 @@ endfunction
 
 function! s:airline()
   let g:airline_theme = 'codedark'
-  let g:airline#extensions#tabline#enabled = 1
   let g:airline#extensions#default#layout = [
     \ [ 'a', 'b', 'c' ],
     \ [ 'x', 'y', 'z' ]
@@ -236,25 +238,69 @@ function! s:airline()
   let g:airline_section_c = '%f %M'
   let g:airline_section_z = get(g:, 'airline_linecolumn_prefix', '').'%3l:%-2v'
   let g:airline#extensions#hunks#non_zero_only = 1 
+  let g:airline#extensions#tabline#enabled = 1
   let g:airline#extensions#tabline#fnamemod = ':t'
-  let g:airline#extensions#tabline#show_buffers = 1
+  let g:airline#extensions#tabline#show_buffers = 0
   let g:airline#extensions#tabline#show_splits = 0
   let g:airline#extensions#tabline#show_tab_nr = 1
+  let g:airline#extensions#tabline#show_tab_count = 0
   let g:airline#extensions#tabline#tab_nr_type = 1
   let g:airline#extensions#tabline#show_close_button = 0
 endfunction
 
 function! s:fern()
-  nnoremap <silent> <C-E> :Fern . -reveal=% -drawer -toggle<CR>
+  let g:fern#disable_default_mappings = 1
+
+  nnoremap <silent> <C-E> :Fern . -reveal=% -drawer -toggle -right<CR>
+  nnoremap <Plug>(fern-close-drawer) :<C-u>FernDo close -drawer -right -stay<CR>
 
   function! s:init_fern() abort
     nmap <buffer> . <Plug>(fern-action-hidden:toggle)
+    nmap <buffer><expr>
+      \ <Plug>(fern-smart-open)
+      \ fern#smart#leaf(
+      \   "<Plug>(fern-action-open:tabedit)",
+      \   "<Plug>(fern-action-expand)",
+      \   "<Plug>(fern-action-collapse)",
+      \ )
+    nmap <buffer><nowait> <CR> <Plug>(fern-smart-open)
+    nmap <buffer><silent> <Plug>(fern-action-open-and-close)
+        \ <Plug>(fern-action-open:edit)
+        \ <Plug>(fern-close-drawer)
+    nmap <buffer> e <Plug>(fern-action-open-and-close)
+    nmap <buffer> c <Plug>(fern-action-copy)
+    nmap <buffer> d <Plug>(fern-action-diff:tabedit:vert)
+    nmap <buffer> g <Plug>(fern-action-grep)
+    nmap <buffer> m <Plug>(fern-action-mark:toggle)
+    nmap <buffer> r <Plug>(fern-action-rename)
+    nmap <buffer> <C-r> <Plug>(fern-action-reload)
+    nmap <buffer> q :<C-u>quit<CR>
   endfunction
 
   augroup fern-custom
     autocmd! *
     autocmd FileType fern call s:init_fern()
   augroup END
+endfunction
+
+function! s:trouble()
+  nnoremap <C-w> <cmd>TroubleToggle<cr>
+lua << EOF
+  require("trouble").setup {
+    icons = false,
+    fold_open = "v", -- icon used for open folds
+    fold_closed = ">", -- icon used for closed folds
+    indent_lines = false, -- add an indent guide below the fold icons
+    signs = {
+        -- icons / text used for a diagnostic
+        error = "X",
+        warning = "!",
+        hint = "?",
+        information = "i"
+    },
+    use_diagnostic_signs = false -- enabling this will use the signs defined in your lsp client
+  }
+EOF
 endfunction
 
 function! s:autocompletion()
@@ -338,9 +384,7 @@ lua << EOF
   
   vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
    vim.lsp.diagnostic.on_publish_diagnostics, {
-     virtual_text = {
-       prefix = '!',
-     },
+     virtual_text = false, underline = true
    }
   )
   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
