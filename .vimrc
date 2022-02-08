@@ -190,18 +190,26 @@ function! s:setup()
   if $IONIDE_DEBUG == 1
     Plug '~/Documents/codes/Ionide-vim'
   else
-    Plug 'ionide/Ionide-vim'
+    Plug 'ionide/Ionide-vim', {
+        \ 'do':  'make fsautocomplete',
+        \}
   endif
 
   if has('nvim')
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'ncm2/float-preview.nvim'
+    Plug 'neovim/nvim-lspconfig'
+    Plug 'hrsh7th/cmp-nvim-lsp', { 'branch': 'main' }
+    Plug 'hrsh7th/cmp-buffer', { 'branch': 'main' }
+    Plug 'hrsh7th/cmp-path', { 'branch': 'main' }
+    Plug 'hrsh7th/cmp-cmdline', { 'branch': 'main' }
+    Plug 'hrsh7th/nvim-cmp', { 'branch': 'main' }
+    Plug 'hrsh7th/cmp-vsnip', { 'branch': 'main' }
+    Plug 'hrsh7th/vim-vsnip'
   else
     Plug 'Shougo/deoplete.nvim'
     Plug 'roxma/nvim-yarp'
     Plug 'roxma/vim-hug-neovim-rpc'
+    Plug 'deoplete-plugins/deoplete-lsp'
   endif
-  Plug 'deoplete-plugins/deoplete-lsp'
 
   Plug 'cohama/lexima.vim'
 
@@ -210,14 +218,12 @@ function! s:setup()
   call plug#end()
 
   colorscheme codedark
-  
-  let g:deoplete#enable_at_startup = 1
-  let g:float_preview#docked = 1
 
   call s:airline()
   call s:fern()
-  call s:languageclient()
-  " call s:nvim_lsp()
+  call s:language_settings()
+  call s:autocompletion()
+  call s:nvim_lsp()
 endfunction
 
 function! s:airline()
@@ -251,49 +257,40 @@ function! s:fern()
   augroup END
 endfunction
 
-function! s:languageclient_neovim()
-  let g:LanguageClient_loggingFile = expand('~/.vim/LanguageClient.log')
-  let g:LanguageClient_serverStderr = expand('~/.vim/LanguageClient.stderr.log')
-  let g:LanguageClient_serverCommands = {
-    \ 'ocaml': ['ocamllsp', '--log-file=/tmp/ocamllsp.log'],
-    \ 'c': ['ccls', '--log-file=/tmp/cc.log'],
-    \ 'cpp': ['ccls', '--log-file=/tmp/cc.log'],
-    \ 'cuda': ['ccls', '--log-file=/tmp/cc.log'],
-    \ 'objc': ['ccls', '--log-file=/tmp/cc.log'],
-    \ }
-  let g:LanguageClient_rootMarkers = {
-    \ 'ocaml': ['dune-project'],
-    \ } 
-  let g:LanguageClient_diagnosticsDisplay = { 
-      \  1: {
-      \    'name': 'Error',
-      \    'texthl': 'LanguageClientError',
-      \    'signText': 'E',
-      \    'signTexthl': 'LanguageClientErrorSign',
-      \    'virtualTexthl': 'Error',
-      \  },
-      \  2: {
-      \    'name': 'Warning',
-      \    'texthl': 'LanguageClientWarning',
-      \    'signText': 'W',
-      \    'signTexthl': 'LanguageClientWarningSign',
-      \    'virtualTexthl': 'Todo',
-      \  },
-      \  3: {
-      \    'name': 'Information',
-      \    'texthl': 'LanguageClientInfo',
-      \    'signText': 'I',
-      \    'signTexthl': 'LanguageClientInfoign',
-      \    'virtualTexthl': 'Todo',
-      \  },
-      \  4: {
-      \    'name': 'Hint',
-      \    'texthl': 'LanguageClientInfo',
-      \    'signText': 'H',
-      \    'signTexthl': 'LanguageClientInfoSign',
-      \    'virtualTexthl': 'Todo',
-      \  },
-      \}
+function! s:autocompletion()
+  if has('nvim')
+lua << EOF
+      local cmp = require'cmp'
+
+      cmp.setup({
+        snippet = {
+          expand = function(args)
+            vim.fn["vsnip#anonymous"](args.body)
+          end,
+        },
+        mapping = {
+          ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+          ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+          ['<M-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+          ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+          ['<C-e>'] = cmp.mapping({
+            i = cmp.mapping.abort(),
+            c = cmp.mapping.close(),
+          }),
+          ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        },
+        sources = cmp.config.sources({ { name = 'nvim_lsp' }, { name = 'vsnip' }, { name = 'buffer' } })
+      })
+
+      -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+      cmp.setup.cmdline('/', { sources = { { name = 'buffer' } } })
+
+      -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+      cmp.setup.cmdline(':', { sources = cmp.config.sources({ { name = 'path' } }, { { name = 'cmdline' } }) })
+EOF
+  else
+    let g:deoplete#enable_at_startup = 1
+  endif
 endfunction
 
 function! s:nvim_lsp()
@@ -320,24 +317,9 @@ lua << EOF
     buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
     buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
   end 
-
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  local completionItem = capabilities.textDocument.completion.completionItem
-  completionItem.snippetSupport = true
-  completionItem.preselectSupport = true
-  completionItem.insertReplaceSupport = true
-  completionItem.labelDetailsSupport = true
-  completionItem.deprecatedSupport = true
-  completionItem.commitCharactersSupport = true
-  completionItem.tagSupport = true
-  completionItem.resolveSupport = {
-    properties = {
-      'documentation',
-      'detail',
-      'additionalTextEdits',
-    }
-  }
   
+  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
   local setup = function(server)
     server.setup {
       autostart = true,
@@ -348,6 +330,7 @@ lua << EOF
       capabilities = capabilities
     }
   end
+
   local lspconfig = require('lspconfig')
   setup(lspconfig.ocamllsp)
   setup(lspconfig.ccls)
@@ -360,15 +343,19 @@ lua << EOF
      },
    }
   )
+  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+    vim.lsp.handlers.hover, { focusable = false }
+  )
 EOF
 endfunction
 
-function! s:languageclient()
+function! s:language_settings()
   if has('nvim') && exists('*nvim_open_win')
     set updatetime=1000
     augroup FSharpShowTooltip
       autocmd!
       autocmd CursorHold *.fs,*.fsi,*.fsx call fsharp#showTooltip()
+      autocmd CompleteDonePre *.fs call s:test()
     augroup END
   endif
 
@@ -376,11 +363,8 @@ function! s:languageclient()
   let g:fsharp#linter = 0
   let g:fsharp#enable_reference_code_lens = 0
   let g:fsharp#line_lens = { 'enabled': 'never', 'prefix': '' }
-  let g:fsharp#fsharp_interactive_command = "dotnet fsi"
   let g:fsharp#show_signature_on_cursor_move = 0
-  let g:fsharp#lsp_auto_setup = 1
+  let g:fsharp#lsp_auto_setup = 0
 endfunction
 
 call s:setup()
-
-
