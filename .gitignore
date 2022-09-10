@@ -1,3 +1,4 @@
 *
 !.config/Code/User/settings.json
 !.gitignore_global
+!.gitconfig

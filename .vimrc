@@ -190,9 +190,7 @@ function! s:setup()
   if $IONIDE_DEBUG == 1
     Plug '~/Documents/codes/Ionide-vim'
   else
-    Plug 'ionide/Ionide-vim', {
-        \ 'do':  'make fsautocomplete',
-        \}
+    Plug 'ionide/Ionide-vim'
   endif
 
   if has('nvim')
@@ -215,7 +213,7 @@ function! s:setup()
 
   Plug 'cohama/lexima.vim'
 
-  Plug 'lambdalisue/fern.vim'
+  Plug 'lambdalisue/fern.vim', { 'branch': 'main' }
 
   call plug#end()
 
@@ -404,9 +402,11 @@ function! s:language_settings()
   endif
 
   let g:fsharp#exclude_project_directories = ['paket-files']
-  let g:fsharp#linter = 0
+  let g:fsharp#linter = 1
+  let g:fsharp#unused_opens_analyzer = 1
+  let g:fsharp#unused_declarations_analyzer = 1
   let g:fsharp#enable_reference_code_lens = 0
-  let g:fsharp#line_lens = { 'enabled': 'never', 'prefix': '' }
+  " let g:fsharp#line_lens = { 'enabled': 'never', 'prefix': '' }
   let g:fsharp#show_signature_on_cursor_move = 0
   let g:fsharp#lsp_auto_setup = 0
 endfunction

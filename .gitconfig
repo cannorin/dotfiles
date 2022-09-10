@@ -1,0 +1,33 @@
+[commit]
+	gpgsign = true
+[user]
+	signingkey = 4536C5F37458375E18DBE316B067DB2E5AC1DE2E
+[gpg]
+	program = gpg
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[core]
+  editor = nvim
+
+[alias]
+  last = log -1 HEAD
+  unstage = reset HEAD --
+  log1 = log --oneline
+  current-branch = !git branch | grep -e '^\\* ' | sed -e 's/^\\* //g'
+  force-pull = !git fetch && git reset --hard origin/$(git current-branch)
+  commit-today = !git commit -m \"`LANG=C date`\" #
+  add-theirs  = !git checkout --theirs $@ && git add $@ #
+  add-ours = !git checkout --ours $@ && git add $@ #
+  fix = "!f() { nvim -p +/HEAD `git diff --name-only --diff-filter=U`; }; f"
+  
+[merge]
+	tool = vimdiff
+[rerere]
+	enabled = true
+[pull]
+	rebase = false
+[init]
+	defaultBranch = main

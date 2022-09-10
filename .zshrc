@@ -9,14 +9,17 @@ export EDITOR=vim
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 export PATH=$HOME/.local/bin:$PATH
 export PATH=$PATH:/usr/sbin:/usr/local/sbin:/usr/local/heroku/bin:$HOME/.cabal/bin
-export PATH=$PATH:$HOME/.opam/4.06.0/bin
 export PATH=$PATH:$HOME/.dotnet/tools
 export PATH=$PATH:/Users/alice/Library/Developer/Xamarin/android-sdk-macosx/platform-tools
 export PATH=$PATH:$HOME/scilab-6.0.2/bin
 
+#export DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER=0
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+
 if [ -f "$HOME/.windows" ]; then {
   export GPG_TTY=$(tty)
   export DISPLAY=localhost:0.0
+  unsetopt PATH_DIRS
 }
 elif [ -f "$HOME/.osx" ]; then {
   PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
@@ -49,7 +52,6 @@ else {
   export QT_IM_MODULE DEFAULT=fcitx
 
   export FrameworkPathOverride=/usr/lib/mono/4.7.1-api/
-  export DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER=0
   alias -s exe=winexe
   alias -s msi="wine msiexec /i"
   alias -s inf="wine rundll32 setupapi,InstallHinfSection DefaultInstall 132"
@@ -61,8 +63,6 @@ else {
   PERL_MM_OPT="INSTALL_BASE=/home/alice/perl5"; export PERL_MM_OPT;
 }
 fi
-
-export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 # Setup ssh-agent
 if [ -f ~/.ssh-agent ]; then
@@ -161,18 +161,6 @@ function git-reset-author() {
   git commit --amend --reset-author
 }
 
-function git-set-author-github-company() {
-  git config --local --add user.email "cannorin@peano-system.jp"
-  git config --local --add user.name "cannorin"
-}
-
-function git-reset-author-github-company() {
-  git-set-author-github-company
-  git commit --amend --reset-author
-}
-
-alias git-commit-today='git commit -m "$(LANG=C date)"'
-
 function git-unignore() {
   [ -f ".gitignore" ] ||
   {
@@ -193,6 +181,11 @@ function c() {
   }
 }
 
-test -r $HOME/.opam/opam-init/init.zsh && . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+# opam configuration
+[[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
