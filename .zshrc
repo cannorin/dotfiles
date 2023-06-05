@@ -13,6 +13,8 @@ export PATH=$PATH:$HOME/.dotnet/tools
 export PATH=$PATH:/Users/alice/Library/Developer/Xamarin/android-sdk-macosx/platform-tools
 export PATH=$PATH:$HOME/scilab-6.0.2/bin
 
+command -v direnv &> /dev/null && eval "$(direnv hook zsh)"
+
 #export DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER=0
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
