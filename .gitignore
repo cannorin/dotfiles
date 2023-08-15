@@ -2,3 +2,7 @@
 !.config/Code/User/settings.json
 !.gitignore_global
 !.gitconfig
+!.zshrc.d
+!.zshrc.d/*
+!.zshrc-platform.d
+!.zshrc-platform.d/*
