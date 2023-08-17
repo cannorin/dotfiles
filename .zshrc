@@ -3,6 +3,7 @@ autoload -U compinit
 compinit -u
 
 export EDITOR=vim
+export PATH=$HOME/.local/bin:$PATH:/usr/sbin:/usr/local/sbin
 
 # load global configurations
 () {
@@ -41,7 +42,6 @@ export EDITOR=vim
   fi
 }
 
-export PATH=$HOME/.local.bin:$PATH:/usr/sbin:/usr/local/sbin
 command -v direnv &> /dev/null && eval "$(direnv hook zsh)"
 
 setopt auto_pushd nolistbeep list_packed
