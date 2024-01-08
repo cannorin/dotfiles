@@ -11,6 +11,8 @@
 	smudge = git-lfs smudge -- %f
 [core]
   editor = nvim
+	ignorecase = false
+	fileMode = false
 
 [alias]
   last = log -1 HEAD
