@@ -188,7 +188,7 @@ function! s:setup()
   Plug 'neovim/nvim-lspconfig'
 
   if $IONIDE_DEBUG == 1
-    Plug '~/Documents/codes/Ionide-vim'
+    Plug '~/codes/Ionide-vim'
   else
     Plug 'ionide/Ionide-vim'
   endif
