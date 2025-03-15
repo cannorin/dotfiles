@@ -9,4 +9,3 @@ for ID_FILE in $HOME/.ssh/id_*; do
   if [ -f "$ID_FILE" ]; then ssh-add $ID_FILE >/dev/null 2>&1; fi
 done
 
-
