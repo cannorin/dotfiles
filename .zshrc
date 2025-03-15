@@ -1,3 +1,4 @@
+if [[ ":$FPATH:" != *":/home/alice/.zsh/completions:"* ]]; then export FPATH="/home/alice/.zsh/completions:$FPATH"; fi
 export FPATH=$FPATH:~/.local/share/zsh/functions/Completion
 autoload -U compinit
 compinit -u
@@ -113,3 +114,4 @@ function c() {
     rm a.out
   }
 }
+

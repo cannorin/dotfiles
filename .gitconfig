@@ -13,7 +13,7 @@
   editor = nvim
 	ignorecase = false
 	fileMode = false
-	autocrlf = false
+	autocrlf = true
 
 [alias]
   last = log -1 HEAD
