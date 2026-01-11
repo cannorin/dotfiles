@@ -1,102 +1,98 @@
 {
-    "editor.fontFamily": "Inconsolata",
-    "FSharp.msbuildHost": ".net core",
-    "FSharp.msbuildAutoshow": true,
-    "window.titleBarStyle": "custom",
-    "vim.normalModeKeyBindingsNonRecursive": [
+  "[markdown]": {
+    "editor.fontFamily": "'HackGen Console NF', Consolas, monospace"
+  },
+  "csharp.suppressDotnetInstallWarning": true,
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.detectIndentation": false,
+  "editor.fontFamily": "'HackGen35 Console NF', Consolas, monospace",
+  "editor.fontLigatures": true,
+  "editor.minimap.enabled": false,
+  "editor.minimap.maxColumn": 30,
+  "editor.minimap.renderCharacters": false,
+  "editor.smoothScrolling": true,
+  "editor.suggestSelection": "first",
+  "editor.tabCompletion": "on",
+  "editor.tabSize": 2,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "extensions.ignoreRecommendations": true,
+  "files.associations": {
+    "*.tidal": "haskell"
+  },
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.factorypath": true,
+    "**/.project": true,
+    "**/.settings": true
+  },
+  "FSharp.enableReferenceCodeLens": false,
+  "FSharp.enableTouchBar": false,
+  "FSharp.externalAutocomplete": false,
+  "FSharp.fsacRuntime": "netcore",
+  "FSharp.linter": false,
+  "FSharp.msbuildAutoshow": true,
+  "FSharp.msbuildHost": ".net core",
+  "FSharp.resolveNamespaces": false,
+  "FSharp.trace.server": "messages",
+  "FSharp.useSdkScripts": true,
+  "git.openRepositoryInParentFolders": "never",
+  "latex-workshop.bind.enter.key": false,
+  "latex-workshop.latex.tools": [
+    {
+      "args": [
+        "-e",
+        "$latex=q/uplatex %O -synctex=1 -interaction=nonstopmode -file-line-error %S/",
+        "-e",
+        "$bibtex=q/upbibtex %O %B/",
+        "-e",
+        "$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/",
+        "-e",
+        "$makeindex=q/upmendex %O -o %D %S/",
+        "-e",
+        "$dvipdf=q/dvipdfmx %O -o %D %S/",
+        "-norc",
+        "-pdfdvi",
+        "%DOC%"
+      ],
+      "command": "latexmk",
+      "name": "latexmk"
+    }
+  ],
+  "latex-workshop.message.error.show": false,
+  "latex-workshop.message.warning.show": false,
+  "latex-workshop.view.pdf.viewer": "tab",
+  "redhat.telemetry.enabled": false,
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "after": [],
+      "before": [
+        "u"
+      ],
+      "commands": [
         {
-            "before": [
-                "u"
-            ],
-            "after": [],
-            "commands": [
-                {
-                    "command": "undo"
-                }
-            ]
-        },
-        {
-            "before": [
-                "<C-r>"
-            ],
-            "after": [],
-            "commands": [
-                {
-                    "command": "redo"
-                }
-            ]
+          "command": "undo"
         }
-    ],
-    "FSharp.resolveNamespaces": false,
-    "explorer.confirmDragAndDrop": false,
-    "FSharp.externalAutocomplete": false,
-    "editor.minimap.maxColumn": 30,
-    "window.zoomLevel": 0,
-    "editor.fontSize": 16,
-    "editor.fontLigatures": false,
-    "editor.minimap.renderCharacters": false,
-    "editor.minimap.enabled": false,
-    "editor.smoothScrolling": true,
-    "editor.cursorSmoothCaretAnimation": true,
-    "window.enableMenuBarMnemonics": false,
-    "FSharp.fsacRuntime": "netcore",
-    "workbench.editor.tabSizing": "shrink",
-    "latex-workshop.latex.tools": [
-      {
-        "name": "latexmk",
-        "command": "latexmk",
-        "args": [
-          "-e",
-          "$latex=q/uplatex %O -synctex=1 -interaction=nonstopmode -file-line-error %S/",
-          "-e",
-          "$bibtex=q/upbibtex %O %B/",
-          "-e",
-          "$biber=q/biber %O --bblencoding=utf8 -u -U --output_safechars %B/",
-          "-e",
-          "$makeindex=q/upmendex %O -o %D %S/",
-          "-e",
-          "$dvipdf=q/dvipdfmx %O -o %D %S/",
-          "-norc",
-          "-pdfdvi",
-          "%DOC%"
-        ]
-      }
-    ],
-    "latex-workshop.view.pdf.viewer": "tab",
-    "editor.tabSize": 2,
-    "editor.tabCompletion": "on",
-    "FSharp.linter": false,
-    "explorer.confirmDelete": false,
-    "csharp.suppressDotnetInstallWarning": true,
-    "omnisharp.useGlobalMono": "always",
-    "FSharp.enableTouchBar": false,
-    "latex-workshop.message.update.show": false,
-    "latex-workshop.bind.enter.key": false,
-    "latex-workshop.message.error.show": false,
-    "latex-workshop.message.warning.show": false,
-    "editor.detectIndentation": false,
-    "aws.telemetry": false,
-    "aws.profile": "default",
-    "files.associations": {
-      "*.tidal": "haskell"
+      ]
     },
-    "FSharp.enableReferenceCodeLens": false,
-    "FSharp.useSdkScripts": true,
-    "ocaml.lsp.path": "/home/alice/codes/work/ocaml-lsp/_build/install/default/bin/ocamllsp",
-    "ocaml-language-server.trace.server": "messages",
-    "FSharp.trace.server": "messages",
-    "window.restoreWindows": "one",
-    "tidalcycles.sounds.paths": [
-      "/home/alice/.local/share/SuperCollider/downloaded-quarks/Dirt-Samples"
-    ],
-    "java.semanticHighlighting.enabled": true,
-    "editor.suggestSelection": "first",
-    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-    "files.exclude": {
-      "**/.classpath": true,
-      "**/.project": true,
-      "**/.settings": true,
-      "**/.factorypath": true
-    },
-    "java.refactor.renameFromFileExplorer": "autoApply",
+    {
+      "after": [],
+      "before": [
+        "<C-r>"
+      ],
+      "commands": [
+        {
+          "command": "redo"
+        }
+      ]
+    }
+  ],
+  "window.enableMenuBarMnemonics": false,
+  "window.restoreWindows": "one",
+  "window.titleBarStyle": "custom",
+  "window.zoomLevel": 0,
+  "workbench.editor.tabSizing": "shrink",
+  "quarkus.tools.alwaysShowWelcomePage": false,
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "workbench.colorTheme": "Default Light Modern"
 }
