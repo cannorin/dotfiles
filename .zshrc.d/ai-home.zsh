@@ -22,6 +22,15 @@ _nearest_ai_home() {
   print -r -- "$fallback"
 }
 
+_update_ai_home() {
+  export CODEX_HOME=$(_nearest_ai_home .codex-home "$HOME/.codex")
+  export CLAUDE_CONFIG_DIR=$(_nearest_ai_home .claude-home "$HOME/.claude")
+}
+
+autoload -Uz add-zsh-hook
+add-zsh-hook chpwd _update_ai_home
+_update_ai_home
+
 codex() {
   local config_home=$(_nearest_ai_home .codex-home "$HOME/.codex")
   CODEX_HOME=$config_home command codex "$@"
